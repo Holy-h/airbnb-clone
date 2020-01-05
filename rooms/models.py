@@ -51,7 +51,7 @@ class HouseRule(AbstractItem):
 
 
 class Photo(core_models.TimeStampedModel):
-    
+
     """ Photo Model Definition """
 
     caption = models.CharField(max_length=80)
@@ -80,7 +80,7 @@ class Room(core_models.TimeStampedModel):
     check_out = models.TimeField()
     instant_book = models.BooleanField(default=False)
     # Toknow - on_delete(CASCADE): 부모가 삭제되면, 자식도 삭제됨(일대다관계)
-    host = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
+    host = models.ForeignKey("users.User", on_delete=models.CASCADE)
     room_type = models.ForeignKey(RoomType, on_delete=models.SET_NULL, null=True)
     amenities = models.ManyToManyField(Amenity, blank=True)
     facilities = models.ManyToManyField(Facility, blank=True)
