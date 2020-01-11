@@ -1,8 +1,11 @@
 {
-  "python.pythonPath": "C:\\Users\\kepy1\\.virtualenvs\\airbnb-clone-UQnVkxhe\\Scripts\\python.exe",
+  "python.pythonPath": "C:\\Users\\kepy1\\.virtualenvs\\airbnb-clone-k4XCRI6A\\Scripts\\python.exe",
   "python.linting.flake8Enabled": true,
   "python.linting.enabled": true,
   "python.formatting.provider": "black",
   "python.linting.flake8Args": ["--max-line-length=100"],
-  "python.linting.pylintArgs": ["--load-plugins=pylint_django"]
+  "python.linting.pylintArgs": [
+    "--load-plugins=pylint_django"
+  ],
+  "python.linting.pylintEnabled": false
 }
