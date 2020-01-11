@@ -134,4 +134,8 @@ Django 커스터마이징
 
 AUTH_USER_MODEL = "users.User"
 
+# Where to Save
 MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+
+# Where to Find
+MEDIA_URL = "/media/"
