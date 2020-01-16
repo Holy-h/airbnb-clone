@@ -35,6 +35,6 @@ class User(AbstractUser):
         choices=LANGUAGE_CHOICES, max_length=2, default=LANGUAGE_KOREAN, blank=True,
     )
     currency = models.CharField(
-        choices=CURRENCY_CHOICES, max_length=3, default=CURRENCY_KRW, blank=True,
+        choices=CURRENCY_CHOICES, max_length=3, blank=True, default=CURRENCY_KRW
     )
     superhost = models.BooleanField(default=False)
