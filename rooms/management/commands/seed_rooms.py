@@ -36,13 +36,13 @@ class Command(BaseCommand):
                 "baths": lambda x: random.randint(1, 8),
             },
         )
-        created_photos = seeder.execute()
-        created_clean = flatten(list(created_photos.values()))
+        created = seeder.execute()
+        cleaned = flatten(list(created.values()))
         amenities = room_models.Amenity.objects.all()
         facilities = room_models.Facility.objects.all()
         rules = room_models.HouseRule.objects.all()
 
-        for pk in created_clean:
+        for pk in cleaned:
             room = room_models.Room.objects.get(pk=pk)
             for i in range(3, random.randint(10, 30)):
                 room_models.Photo.objects.create(
