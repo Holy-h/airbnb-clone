@@ -1,0 +1,4 @@
+{% extends "base.html" %}
+{% for room in rooms %}
+<h4>{{room.name}} / ${{room.price}}</h4>
+{% endfor %}
