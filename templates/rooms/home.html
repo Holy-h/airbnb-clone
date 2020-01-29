@@ -1,4 +1,12 @@
 {% extends "base.html" %}
-{% for room in rooms %}
-<h4>{{room.name}} / ${{room.price}}</h4>
-{% endfor %}
+
+{% block page_name %}
+    home
+{% endblock page_name %}
+
+{% block content %}
+    {% for room in rooms %}
+    <h4>{{room.name}} / ${{room.price}}</h4>
+    {% endfor %}
+{% endblock content %}
+
