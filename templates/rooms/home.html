@@ -5,22 +5,23 @@
 {% endblock page_name %}
 
 {% block content %}
-    {% for room in rooms.object_list %}
+    {% for room in Page.object_list %}
         <h4>{{room.name}} / ${{room.price}}</h4>
     {% endfor %}
 
     <h5>
-        {% if rooms.has_previous %}
-            <a href="?page={{rooms.number|add:-1}}">이전</a>
+        {% if Page.has_previous %}
+            <a href="?page={{Page.previous_page_number}}">이전</a>
         {% endif %}
         
-        Page {{rooms.number}} of {{rooms.paginator.num_pages}}
+        Page {{Page.number}} of {{Page.paginator.num_pages}}
 
-        {% if rooms.has_next %}
-            <a href="?page={{rooms.number|add:1}}">다음</a>        
+        {% if Page.has_next %}
+            <a href="?page={{Page.next_page_number}}">다음</a>        
         {% endif %}
+        
         <br>
-        {% for page in rooms.paginator.page_range %}
+        {% for page in Page.paginator.page_range %}
             <a href="?page={{page}}">{{page}}</a>
         {% endfor %}
 
