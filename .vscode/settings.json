@@ -4,6 +4,10 @@
   "python.linting.enabled": true,
   "python.formatting.provider": "black",
   "python.linting.flake8Args": ["--max-line-length=100", "--ignore=E203"],
-  "python.linting.pylintArgs": ["--load-plugins=pylint_django"],
+  "python.linting.pylintArgs": [
+    "--load-plugins=pylint_django",
+    "--disable=too-many-ancestors",
+    "--disable=missing-module-docstring"
+  ],
   "python.linting.pylintEnabled": true
 }
