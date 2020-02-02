@@ -22,3 +22,9 @@ def room_detail(request, pk):
     except models.Room.DoesNotExist:
         # 404 NotFund
         raise Http404()
+
+
+def search(request):
+    search_keyword = request.GET.get("city")
+    search_keyword = str.capitalize(search_keyword)
+    return render(request, "rooms/room_search.html", context={"city": search_keyword})
