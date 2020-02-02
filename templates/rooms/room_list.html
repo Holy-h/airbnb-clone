@@ -8,7 +8,10 @@
     {{now}}
 
     {% for room in rooms %}
-        <h4>{{room.name}} / ${{room.price}}</h4>
+        <h3>
+            <a href="{% url "rooms:detail" room.pk %}">
+                {{room.name}} / ${{room.price}}</h3>
+            </a>
     {% endfor %}
     <h5>
         {% if page_obj.has_previous %}
