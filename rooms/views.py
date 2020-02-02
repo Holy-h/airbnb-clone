@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 from django.http import Http404
 from django.shortcuts import render
+from django_countries import countries
 from . import models
 
 
@@ -25,6 +26,11 @@ def room_detail(request, pk):
 
 
 def search(request):
-    search_keyword = request.GET.get("city")
+    search_keyword = request.GET.get("city", "Anywhere")
     search_keyword = str.capitalize(search_keyword)
-    return render(request, "rooms/room_search.html", context={"city": search_keyword})
+    room_types = models.RoomType.objects.all()
+    return render(
+        request,
+        "rooms/room_search.html",
+        context={"city": search_keyword, "countries": countries, "room_types": room_types},
+    )
