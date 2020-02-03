@@ -154,8 +154,10 @@
   </form>
 
   <h2>Search!</h2>
-  <h3>Searching by {{s_city}}</h3>
-  <h3>Searching by {{s_country}}</h3>
-  <h3>Searching by {{s_room_type}}</h3>
+
+  <h3>Results</h3>
+  {% for room in rooms %}
+    <h4>{{room.name}}</h4>
+  {% endfor %}
 
 {% endblock content %}
