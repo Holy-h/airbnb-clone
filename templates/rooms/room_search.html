@@ -22,4 +22,21 @@
     <h4>{{room.name}}</h4>
   {% endfor %}
 
+  <h5>
+    {% if rooms.has_previous %}
+        <a href="?{{query_string}}&page={{rooms.previous_page_number}}">이전</a>
+    {% endif %}
+    
+    Page {{rooms.number}} of {{rooms.paginator.num_pages}}
+
+    {% if rooms.has_next %}
+        <a href="?{{query_string}}&page={{rooms.next_page_number}}">다음</a>        
+    {% endif %}
+    
+    <br>
+    {% for page in rooms.paginator.page_range %}
+        <a href="?{{query_string}}&page={{page}}">{{page}}</a>
+    {% endfor %}
+  </h5> 
+
 {% endblock content %}

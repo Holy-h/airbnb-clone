@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.views.generic import ListView, View, DetailView
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from . import models, forms
 
 
@@ -11,7 +12,7 @@ class HomeView(ListView):
     model = models.Room
     paginate_by = 10
     paginate_orphans = 5
-    ordering = "created"
+    ordering = "-created"
     context_object_name = "rooms"
 
 
@@ -54,7 +55,7 @@ class SearchView(View):
                 amenities = form.cleaned_data.get("amenities")
                 facilities = form.cleaned_data.get("facilities")
 
-                # filter
+                """ filter """
                 filter_args = Q()
 
                 if city != "Anywhere":
@@ -86,22 +87,47 @@ class SearchView(View):
                 if superhost is True:
                     filter_args &= Q(host__superhost=True)
 
-                rooms = models.Room.objects.filter(filter_args)
+                qs = models.Room.objects.filter(filter_args)
 
                 for amenity in amenities:
                     # rooms = rooms & models.Room.objects.filter(amenities=amenity)
-                    rooms = rooms.filter(amenities=amenity)
+                    qs = qs.filter(amenities=amenity)
 
                 for facility in facilities:
                     # rooms = rooms & models.Room.objects.filter(facilities=facility)
-                    rooms = rooms.filter(facilities=facility)
+                    qs = qs.filter(facilities=facility)
 
-                print(request.GET)
+                qs = qs.order_by("-created")
+
+                paginator = Paginator(qs, 10)
+
+                page = request.GET.get("page", 1)
+
+                rooms = paginator.get_page(page)
+
+                """ query_string 만들기_Pagination """
+
+                urlencode = request.GET.urlencode()
+
+                query_list = [i for i in urlencode.split("&") if "page=" not in i]
+
+                """
+                복잡한 버전
+                query_list = []
+                for i in urlencode.split("&"):
+                    if "page=" not in i:
+                        query_list.append(i)
+                """
+
+                query_string = "&".join(query_list)
 
                 return render(
-                    request, "rooms/room_search.html", {"form": form, "rooms": rooms}
+                    request,
+                    "rooms/room_search.html",
+                    {"form": form, "rooms": rooms, "query_string": query_string},
                 )
 
         else:
             form = forms.SearchForm()
-            return render(request, "rooms/room_search.html", {"form": form})
+
+        return render(request, "rooms/room_search.html", {"form": form})
