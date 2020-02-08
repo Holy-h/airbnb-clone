@@ -1,8 +1,7 @@
-# from django.urls import path
-# from rooms import views as room_views
+from django.urls import path
+from . import views
 
-# app_name = "users"
+app_name = "users"
 
-# urlpatterns = [
-#     path("", room_views.HomeView, name="home"),
-# ]
+urlpatterns = [path("login", views.LoginView.as_view(), name="login")]
+
