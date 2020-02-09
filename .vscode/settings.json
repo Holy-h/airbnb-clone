@@ -8,7 +8,8 @@
     "--load-plugins=pylint_django",
     "--disable=too-many-ancestors",
     "--disable=missing-module-docstring",
-    "--disable=no-else-return"
+    "--disable=no-else-return",
+    "--disable=missing-function-docstring"
   ],
   "python.linting.pylintEnabled": true
 }

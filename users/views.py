@@ -22,28 +22,23 @@ class LoginView(FormView):
         return super().form_valid(form)
 
 
-# class LoginView(View):
-#     """ LoginView Definition """
-
-#     def get(self, request):
-#         form = forms.LoginForm(initial={"email": "kepy1106@gmail.com"})
-#         return render(request, "users/login.html", {"form": form})
-
-#     def post(self, request):
-#         form = forms.LoginForm(request.POST)
-#         if form.is_valid():
-#             email = form.cleaned_data.get("email")
-#             password = form.cleaned_data.get("password")
-#             user = authenticate(request, username=email, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 return redirect(reverse("core:home"))
-#         return render(request, "users/login.html", {"form": form})
-
-
 def log_out(request):
     logout(request)
     return redirect(reverse("core:home"))
+
+
+class SignupView(FormView):
+
+    """ SignupView Definition """
+
+    template_name = "users/signup.html"
+    form_class = forms.SignupForm
+    success_url = reverse_lazy("core:home")
+    initial = {
+        "first_name": "Byunghun",
+        "last_name": "Kim",
+        "email": "figma@kakao.com",
+    }
 
 
 # Login
