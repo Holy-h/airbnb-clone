@@ -25,6 +25,9 @@ class LoginForm(forms.Form):
 
 
 class SignupForm(forms.ModelForm):
+
+    """ SignupForm Definition """
+
     class Meta:
         model = models.User
         fields = ("first_name", "last_name", "email")
@@ -46,8 +49,9 @@ class SignupForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
+
+        # 바꿔치기
         user = super().save(commit=False)
         user.username = email
         user.set_password(password)
         user.save()
-
