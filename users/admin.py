@@ -29,6 +29,7 @@ class CustomUserAdmin(UserAdmin):
 
     list_display = (
         "username",
+        "login_method",
         "email_verified",
         "email_secret",
         "first_name",

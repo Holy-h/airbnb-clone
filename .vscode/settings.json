@@ -10,6 +10,7 @@
     "--disable=missing-module-docstring",
     "--disable=no-else-return",
     "--disable=missing-function-docstring"
+    "--disable=line-too-long"
   ],
   "python.linting.pylintEnabled": true
 }
