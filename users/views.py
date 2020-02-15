@@ -37,7 +37,7 @@ class SignupView(FormView):
     initial = {
         "first_name": "Byunghun",
         "last_name": "Kim",
-        "email": "kepy1106@gmail.com",
+        "email": "figma@kakao.com",
     }
 
     def form_valid(self, form):
