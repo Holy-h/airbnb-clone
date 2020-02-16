@@ -132,6 +132,8 @@ STATIC_URL = "/static/"
 Django 커스터마이징
 """
 
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
 AUTH_USER_MODEL = "users.User"
 
 # Where to Save
