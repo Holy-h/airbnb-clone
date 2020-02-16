@@ -1,15 +1,15 @@
 {
-  "python.pythonPath": "C:\\Users\\kepy1\\.virtualenvs\\airbnb-clone-UQnVkxhe\\Scripts\\python.exe",
+  "python.pythonPath": "C:\\Users\\kepy1\\.virtualenvs\\airbnb-clone-k4XCRI6A\\Scripts\\python.exe",
   "python.linting.flake8Enabled": true,
   "python.linting.enabled": true,
   "python.formatting.provider": "black",
-  "python.linting.flake8Args": ["--max-line-length=100", "--ignore=E203"],
+  "python.linting.flake8Args": ["--max-line-length=200", "--ignore=E203"],
   "python.linting.pylintArgs": [
     "--load-plugins=pylint_django",
     "--disable=too-many-ancestors",
     "--disable=missing-module-docstring",
     "--disable=no-else-return",
-    "--disable=missing-function-docstring"
+    "--disable=missing-function-docstring",
     "--disable=line-too-long"
   ],
   "python.linting.pylintEnabled": true
