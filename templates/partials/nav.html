@@ -1,16 +1,14 @@
-
-<a href="{% url "core:home" %}">Bongbnb</a>
-<ul>
+<ul class="flex items-center text-sm font-bold">
     {% if user.is_authenticated %}
-        <li>
-            <a href="{% url "users:logout" %}">Log out</a>
+        <li class="px-2">
+            <a class="p-2" href="{% url "users:logout" %}">로그아웃</a>
         </li>
     {% else %}
-        <li>
-            <a href="{% url "users:login" %}">Log in</a>
+        <li class="px-2">
+            <a class="p-2" href="{% url "users:signup" %}">회원 가입</a>
         </li>
-        <li>
-            <a href="{% url "users:signup" %}">Sign up</a>
+        <li class="px-2">
+            <a class="p-2" href="{% url "users:login" %}">로그인</a>
         </li>
     {% endif %}
 </ul>
