@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth import password_validation
 from . import models
 
 
@@ -28,30 +29,42 @@ class SignupForm(forms.ModelForm):
 
     """ SignupForm Definition """
 
+    error_messages = {"password_mismatch": "비밀번호가 일치하지 않습니다."}
+
     class Meta:
         model = models.User
         fields = ("first_name", "last_name", "email")
 
-    password = forms.CharField(widget=forms.PasswordInput)
-    password_confirm = forms.CharField(
-        widget=forms.PasswordInput, label="Confirm Password"
-    )
+    password1 = forms.CharField(label="비밀번호", widget=forms.PasswordInput)
+    password2 = forms.CharField(widget=forms.PasswordInput, label="비밀번호 확인")
 
-    def clean_password_confirm(self):
-        password = self.cleaned_data.get("password")
-        password_confirm = self.cleaned_data.get("password_confirm")
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(
+                self.error_messages["password_mismatch"], code="password_mismatch",
+            )
+        return password2
 
-        if password != password_confirm:
-            raise forms.ValidationError("Password confirmation does not match")
-        else:
-            return password
+    def _post_clean(self):
+        super()._post_clean()
+        # Validate the password after self.instance is updated with form data
+        # by super().
+        password = self.cleaned_data.get("password2")
+        if password:
+            try:
+                password_validation.validate_password(password, self.instance)
+            except forms.ValidationError as error:
+                self.add_error("password2", error)
 
-    def save(self, *args, **kwargs):
-        email = self.cleaned_data.get("email")
-        password = self.cleaned_data.get("password")
-
+    def save(self, commit=True):
         # 바꿔치기
         user = super().save(commit=False)
+        email = self.cleaned_data.get("email")
+        password1 = self.cleaned_data.get("password1")
         user.username = email
-        user.set_password(password)
-        user.save()
+        user.set_password(password1)
+        if commit:
+            user.save()
+        return user

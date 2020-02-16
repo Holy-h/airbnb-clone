@@ -22,6 +22,7 @@ class LoginView(FormView):
         user = authenticate(self.request, username=email, password=password)
         if user is not None:
             login(self.request, user)
+            # to do - email_verified=False일 때, 인증 추가
         return super().form_valid(form)
 
 
@@ -49,11 +50,12 @@ class SignupView(FormView):
 
         # save() 이후에 로그인
         email = form.cleaned_data.get("email")
-        password = form.cleaned_data.get("password")
+        password = form.cleaned_data.get("password1")
         user = authenticate(self.request, username=email, password=password)
         if user is not None:
             login(self.request, user)
-            user.verify_email()
+            # to do - 이메일 인증 다른 방식으로 진행하기
+            # user.verify_email()
         return super().form_valid(form)
 
 
