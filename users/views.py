@@ -145,6 +145,35 @@ def github_callback(request):
         return redirect(reverse("users:login"))
 
 
+def kakao_login(request):
+    client_id = os.environ.get("KAKAO_ID")
+    redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+    return redirect(
+        f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
+    )
+
+
+class kakaoException(Exception):
+    pass
+
+
+def kakao_callback(request):
+    try:
+        code = request.GET.get("code", None)
+        error = request.GET.get("error")
+        print(error)
+        if code is None or error is not None:
+            raise kakaoException()
+        client_id = os.environ.get("KAKAO_ID")
+        redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+        token_request = requests.post(
+            f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}"
+        )
+
+    except kakaoException:
+        return redirect(reverse("users:login"))
+
+
 # Login
 # https://docs.djangoproject.com/en/3.0/topics/auth/default/#how-to-log-a-user-in
 
