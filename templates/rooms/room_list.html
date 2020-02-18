@@ -6,30 +6,33 @@
 
 {% block content %}
 
-    <div class="container mx-auto">
+    <div class="container mx-auto mb-20">
         <div class="mt-32 mb-20 rounded-xl bg-gray-600 w-full h-50vh rounded-lg bg-cover bg-center" style="background-image: url(https://scontent-gmp1-1.xx.fbcdn.net/v/t1.0-1/p480x480/67822857_481016259128447_4356658715886092288_n.jpg?_nc_cat=104&_nc_ohc=t0l4NOT3-fUAX_78D5N&_nc_ht=scontent-gmp1-1.xx&_nc_tp=6&oh=17a404cc7b3750c70e58b022aa522437&oe=5EFA8245);"></div>
         
-        <div class="flex flex-wrap">
+        <div class="flex flex-wrap mb-10">
             {% for room in rooms %}
                 {% include "partials/room_card.html" with room=room %}
             {% endfor %}
         </div>
-        <h5>
-            {% if page_obj.has_previous %}
-                <a href="?page={{page_obj.previous_page_number}}">이전</a>
-            {% endif %}
-            
-            Page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
-
-            {% if page_obj.has_next %}
-                <a href="?page={{page_obj.next_page_number}}">다음</a>        
-            {% endif %}
-            
-            <br>
-            {% for page in page_obj.paginator.page_range %}
-                <a href="?page={{page}}">{{page}}</a>
-            {% endfor %}
-        </h5>    
+        <div class="flex items-center flex-col justify-center">
+            <div>
+                {% if page_obj.has_previous %}
+                    <a href="?page={{page_obj.previous_page_number}}" class="text-purple-500">
+                        <i class="fas fa-arrow-left fa-lg"></i>
+                    </a>
+                {% endif %}
+                
+                <span class="mx-2 text-lg font-semibold">
+                    {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+                </span>
+    
+                {% if page_obj.has_next %}
+                    <a href="?page={{page_obj.next_page_number}}" class="text-purple-500">
+                        <i class="fas fa-arrow-right fa-lg"></i>
+                    </a>        
+                {% endif %}
+            </div>
+        </div>    
     </div>
 
 {% endblock content %}
