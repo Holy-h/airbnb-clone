@@ -1,8 +1,8 @@
-<div>
-    <a href="{% url 'users:github-login' %}">
-        Github로 시작하기
+<div class="flex flex-col w-full">
+    <a href="{% url 'users:github-login' %}" class="w-full border-2 border-gray-700 font-bold text-black mb-2 text-center rounded-sm py-4">
+        <i class="fab fa-github-alt fa-lg mr-2"></i>Github로 시작하기
     </a>
-    <a href="{% url 'users:kakao-login' %}">
-        kakao로 시작하기
+    <a href="{% url 'users:kakao-login' %}" class="w-full border border-yellow-500 font-bold text-black mb-2 text-center rounded-sm py-4 bg-yellow-500">
+        <i class="fas fa-comment fa-lg mr-2"></i>kakao로 시작하기
     </a>
 </div>

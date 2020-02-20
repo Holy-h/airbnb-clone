@@ -112,7 +112,6 @@ def github_callback(request):
                 # api 요청 성공 여부 파악 status_code or resultData
                 profile_json = profile_request.json()
                 username = profile_json.get("login", None)
-                print(profile_json)
                 if username is not None:
                     # 필요한 UserData 담기
                     name = profile_json.get("name")
@@ -124,6 +123,7 @@ def github_callback(request):
                         # 이미 해당 메일로 로그인한 유저가 있는 경우
                         user = models.User.objects.get(email=email)
                         if user.login_method != models.User.LOGIN_GITHUB:
+                            print("다른 방식으로 로그인한 아이디가 있습니다.")
                             raise GithubException()
                             # to do: 다른 방식으로 로그인했는지 체크한 후 안내하기
                     except models.User.DoesNotExist:
