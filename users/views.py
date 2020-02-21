@@ -14,7 +14,6 @@ class LoginView(FormView):
     template_name = "users/login.html"
     form_class = forms.LoginForm
     success_url = reverse_lazy("core:home")
-    initial = {"email": "kepy1106@gmail.com"}
 
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
@@ -38,11 +37,6 @@ class SignupView(FormView):
     template_name = "users/signup.html"
     form_class = forms.SignupForm
     success_url = reverse_lazy("core:home")
-    initial = {
-        "first_name": "Byunghun",
-        "last_name": "Kim",
-        "email": "figma@kakao.com",
-    }
 
     def form_valid(self, form):
         # form이 유효하면 save()

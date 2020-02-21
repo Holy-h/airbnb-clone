@@ -9,12 +9,24 @@
 {% endblock search-bar %}
 
 {% block content %}
-  {% include "partials/social_login.html" %}
+  <div class="container mx-auto py-10 px-6 mt-32 mb-10 flex flex-col items-center border border-gray-300 md:w-1/2 lg:w-5/12 xl:w-4/12">
 
-  <form method="post" action="{% url "users:signup" %}">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button>Sign Up</button>
-  </form>
+    {% include "partials/social_login.html" %}
 
+    <form method="post" action="{% url "users:signup" %}">
+      {% csrf_token %}
+      <div class="input-container">
+        {{form.last_name}}
+        {{form.first_name}}
+        {{form.email}}
+        {{form.password1}}
+        {{form.password2}}
+      </div>
+      <button class="btn-lg bg-red-400 text-white">Sign Up</button>
+    </form>
+    <div class="mt-4">
+      <span class="text-gray-700">이미 Bongnb 계정이 있으신가요?</span>
+      <a href="{% url 'users:login' %}" class="font-bold text-teal-600">로그인</a>
+    </div>
+  </div> 
 {% endblock content %}

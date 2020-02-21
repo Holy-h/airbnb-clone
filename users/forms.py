@@ -7,8 +7,10 @@ class LoginForm(forms.Form):
 
     """ LoginForm Definition """
 
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "이메일"}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "비밀번호"})
+    )
 
     # https://docs.djangoproject.com/en/3.0/ref/forms/validation/#form-and-field-validation
 
@@ -34,9 +36,18 @@ class SignupForm(forms.ModelForm):
     class Meta:
         model = models.User
         fields = ("first_name", "last_name", "email")
+        widgets = {
+            "first_name": forms.TextInput(attrs={"placeholder": "이름"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "성"}),
+            "email": forms.TextInput(attrs={"placeholder": "이메일"}),
+        }
 
-    password1 = forms.CharField(label="비밀번호", widget=forms.PasswordInput)
-    password2 = forms.CharField(widget=forms.PasswordInput, label="비밀번호 확인")
+    password1 = forms.CharField(
+        label="비밀번호", widget=forms.PasswordInput(attrs={"placeholder": "비밀번호"})
+    )
+    password2 = forms.CharField(
+        label="비밀번호 확인", widget=forms.PasswordInput(attrs={"placeholder": "비밀번호 확인"})
+    )
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")

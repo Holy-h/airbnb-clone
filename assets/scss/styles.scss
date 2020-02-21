@@ -19,11 +19,22 @@
   @apply text-lg text-center rounded-sm py-4 font-light w-full;
 }
 
-.input {
+input {
   @apply rounded-sm py-4 font-light w-full text-left border border-gray-400 px-4;
   &:focus {
     @apply outline-none border-teal-500;
   }
+}
+
+form {
+  @apply w-full;
+  input {
+    @apply mb-2;
+  }
+}
+
+.input-container {
+  @apply mb-8 flex flex-col w-full;
 }
 
 @tailwind utilities;
