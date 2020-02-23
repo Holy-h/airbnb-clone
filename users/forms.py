@@ -92,6 +92,9 @@ class SignupForm(forms.ModelForm):
                     self.error_messages["password_mismatch"], code="password_mismatch",
                 ),
             )
+            self.add_error(
+                "password1", forms.ValidationError(""),
+            )
         return password2
 
     def _post_clean(self):
@@ -103,6 +106,7 @@ class SignupForm(forms.ModelForm):
             try:
                 password_validation.validate_password(password, self.instance)
             except forms.ValidationError as error:
+                self.add_error("password1", "")
                 self.add_error("password2", error)
 
     def save(self, commit=True):

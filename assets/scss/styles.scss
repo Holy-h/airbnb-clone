@@ -33,6 +33,9 @@ form {
     &.has_error {
       input {
         @apply border-red-600;
+        :focus {
+          @apply border-red-600;
+        }
       }
     }
   }
