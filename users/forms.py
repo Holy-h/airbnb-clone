@@ -7,6 +7,11 @@ class LoginForm(forms.Form):
 
     """ LoginForm Definition """
 
+    error_messages = {
+        "password_mismatch": "비밀번호가 일치하지 않습니다.",
+        "user_does_not_exist": "존재하지 않는 이메일입니다.",
+    }
+
     email = forms.EmailField(widget=forms.EmailInput(attrs={"placeholder": "이메일"}))
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"placeholder": "비밀번호"})
@@ -22,16 +27,31 @@ class LoginForm(forms.Form):
             if user.check_password(password):
                 return self.cleaned_data
             else:
-                self.add_error("password", forms.ValidationError("Password is worng"))
+                self.add_error(
+                    "password",
+                    forms.ValidationError(
+                        self.error_messages["password_mismatch"],
+                        code="password_mismatch",
+                    ),
+                )
         except models.User.DoesNotExist:
-            self.add_error("email", forms.ValidationError("User does not exist"))
+            self.add_error(
+                "email",
+                forms.ValidationError(
+                    self.error_messages["user_does_not_exist"],
+                    code="user_does_not_exist",
+                ),
+            )
 
 
 class SignupForm(forms.ModelForm):
 
     """ SignupForm Definition """
 
-    error_messages = {"password_mismatch": "비밀번호가 일치하지 않습니다."}
+    error_messages = {
+        "password_mismatch": "비밀번호가 일치하지 않습니다.",
+        "existing_user": "이미 존재하는 이메일입니다.",
+    }
 
     class Meta:
         model = models.User
@@ -49,12 +69,28 @@ class SignupForm(forms.ModelForm):
         label="비밀번호 확인", widget=forms.PasswordInput(attrs={"placeholder": "비밀번호 확인"})
     )
 
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        try:
+            models.User.objects.get(email=email)
+            self.add_error(
+                "email",
+                forms.ValidationError(
+                    self.error_messages["existing_user"], code="existing_user"
+                ),
+            )
+        except models.User.DoesNotExist:
+            return email
+
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
-            raise forms.ValidationError(
-                self.error_messages["password_mismatch"], code="password_mismatch",
+            self.add_error(
+                "password2",
+                forms.ValidationError(
+                    self.error_messages["password_mismatch"], code="password_mismatch",
+                ),
             )
         return password2
 
