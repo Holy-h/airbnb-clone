@@ -3,6 +3,7 @@ import requests
 from django.views.generic import FormView
 from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
 from . import forms, models
@@ -208,6 +209,7 @@ def kakao_callback(request):
         login(request, user)
         return redirect(reverse("core:home"))
     except kakaoException:
+        messages.error(request, "카카오 로그인(회원가입) 실패")
         return redirect(reverse("users:login"))
 
 
