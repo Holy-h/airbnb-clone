@@ -9,30 +9,48 @@
 {% endblock search-bar %}
 
 {% block content %}
-  <div class="container mx-auto py-10 px-6 mt-32 mb-10 flex flex-col items-center border border-gray-300 md:w-1/2 lg:w-5/12 xl:w-4/12">
-    
-    {% include "mixins/user_avatar.html" with user=user_obj%}
-    
-    <div class="mt-4 flex items-center">
-      <span class="font-normal text-2xl">
-        {{user_obj.first_name}}
-      </span>
-      {% if user_obj.superhost %}
-        <span class="text-base ml-1 tooltip">🤠
-          <span class="tooltiptext">Superhost</span>
+
+  <div class="min-h-screen">
+    <div class="container mx-auto py-10 px-6 mt-32 mb-20 flex flex-col items-center border border-gray-300 md:w-1/2 lg:w-5/12 xl:w-4/12">
+      
+      {% include "mixins/user_avatar.html" with user=user_obj%}
+      
+      <div class="mt-4 flex items-center">
+        <span class="font-normal text-2xl">
+          {{user_obj.first_name}}
         </span>
+        {% if user_obj.superhost %}
+          <span class="text-base ml-1 tooltip">🤠
+            <span class="tooltiptext">Superhost</span>
+          </span>
+        {% endif %}
+      </div>
+
+      <span class="mt-2 text-lg">{{user_obj.bio}}</span>
+      
+      {% if not user_obj.email_verified %}
+        <span class="mt-4 text-sm font-medium text-red-400">이메일 미인증</span>
       {% endif %}
+
+      
+      {% if user == user_obj %}
+        <a href="#" class="btn-link mt-10">프로필 수정</a>
+      {% endif %}
+
     </div>
 
-    <span class="mt-2 text-lg">{{user_obj.bio}}</span>
-
-    
-    {% if not user_obj.email_verified %}
-      <span class="mt-4 text-sm font-medium text-red-400">이메일 미인증</span>
-    {% endif %}
-
-    <a href="#" class="btn-lg">프로필 수정</a>
-
+    <div class="container flex flex-col items-center mx-auto mb-20">
+      <span class="mb-10 font-semibold text-xl">{{user_obj.first_name}}의 숙소</span>
+      {% if user_obj.rooms.count > 0 %}
+        <div class="flex flex-wrap mb-10">
+          {% for room in user_obj.rooms.all %}
+            {% include "mixins/room_card.html" with room=room %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <span>숙소가 없어요.😅</span>
+      {% endif %}
+    </div>
   </div>
 
 {% endblock content %}

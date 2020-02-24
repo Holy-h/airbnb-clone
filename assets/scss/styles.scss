@@ -15,8 +15,12 @@
   }
 }
 
-.btn-lg {
+.btn {
   @apply text-lg text-center rounded-sm py-4 font-light w-full;
+}
+
+.btn-link {
+  @apply text-lg text-center text-white rounded-full py-2 font-medium w-full bg-purple-500;
 }
 
 input {
