@@ -21,6 +21,7 @@ class CustomUserAdmin(UserAdmin):
                     "currency",
                     "superhost",
                     "login_method",
+                    "email_verified",
                 )
             },
         ),
