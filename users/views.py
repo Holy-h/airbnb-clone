@@ -27,6 +27,7 @@ class LoginView(FormView):
 
 
 def log_out(request):
+    messages.info(request, f"{request.user.first_name}님, 다음에 또 만나요! 🤗")
     logout(request)
     return redirect(reverse("core:home"))
 
@@ -86,61 +87,56 @@ def github_callback(request):
         client_id = os.environ.get("GITHUB_ID")
         client_secret = os.environ.get("GITHUB_SECRET")
         code = request.GET.get("code", None)
-        if code is not None:
-            token_request = requests.post(
-                f"https://github.com/login/oauth/access_token?client_id={client_id}&client_secret={client_secret}&code={code}",
-                headers={"Accept": "application/json"},
+        if code is None:
+            raise GithubException("🤔🤔Github 코드를 받을 수 없어요.")
+        token_request = requests.post(
+            f"https://github.com/login/oauth/access_token?client_id={client_id}&client_secret={client_secret}&code={code}",
+            headers={"Accept": "application/json"},
+        )
+        token_json = token_request.json()
+        error = token_json.get("error", None)
+        if error is not None:
+            raise GithubException("😱😱Github 인증 토큰을 받을 수 없어요.")
+        access_token = token_json.get("access_token")
+        profile_request = requests.get(
+            "https://api.github.com/user",
+            headers={
+                "Authorization": f"token {access_token}",
+                "Accept": "application/json",
+            },
+        )
+        # api 요청 성공 여부 파악 status_code or resultData
+        profile_json = profile_request.json()
+        username = profile_json.get("login", None)
+        if username is None:
+            raise GithubException("😟😟Github 프로필에서 필요한 정보를 얻을 수 없어요.")
+        # 필요한 UserData 담기
+        name = profile_json.get("name")
+        email = profile_json.get("email")
+        bio = profile_json.get("bio")
+        # to do: name, email, bio가 None인 경우
+        # 기존에 가입한 유저가 있는지 확인
+        try:
+            # 이미 해당 메일로 로그인한 유저가 있는 경우
+            user = models.User.objects.get(email=email)
+            if user.login_method != models.User.LOGIN_GITHUB:
+                raise GithubException(f"🧐이 계정은 [{user.login_method}]로 가입되어 있어요.")
+        except models.User.DoesNotExist:
+            # 해당 이메일의 유저가 존재하지 않는 경우
+            user = models.User.objects.create(
+                email=email,
+                first_name=name,
+                username=email,
+                bio=bio,
+                login_method=models.User.LOGIN_GITHUB,
+                email_verified=True,
             )
-            token_json = token_request.json()
-            error = token_json.get("error", None)
-            if error is not None:
-                raise GithubException()
-            else:
-                access_token = token_json.get("access_token")
-                profile_request = requests.get(
-                    "https://api.github.com/user",
-                    headers={
-                        "Authorization": f"token {access_token}",
-                        "Accept": "application/json",
-                    },
-                )
-                # api 요청 성공 여부 파악 status_code or resultData
-                profile_json = profile_request.json()
-                username = profile_json.get("login", None)
-                if username is not None:
-                    # 필요한 UserData 담기
-                    name = profile_json.get("name")
-                    email = profile_json.get("email")
-                    bio = profile_json.get("bio")
-                    # to do: name, email, bio가 None인 경우
-                    # 기존에 가입한 유저가 있는지 확인
-                    try:
-                        # 이미 해당 메일로 로그인한 유저가 있는 경우
-                        user = models.User.objects.get(email=email)
-                        if user.login_method != models.User.LOGIN_GITHUB:
-                            print("다른 방식으로 로그인한 아이디가 있습니다.")
-                            raise GithubException()
-                            # to do: 다른 방식으로 로그인했는지 체크한 후 안내하기
-                    except models.User.DoesNotExist:
-                        # 해당 이메일의 유저가 존재하지 않는 경우
-                        user = models.User.objects.create(
-                            email=email,
-                            first_name=name,
-                            username=email,
-                            bio=bio,
-                            login_method=models.User.LOGIN_GITHUB,
-                            email_verified=True,
-                        )
-                        user.set_unusable_password()
-                        user.save()
-                    login(request, user)
-                    return redirect(reverse("core:home"))
-                else:
-                    raise GithubException()
-        else:
-            raise GithubException()
-    except GithubException:
-        # to do: send error message
+            user.set_unusable_password()
+            user.save()
+        login(request, user)
+        return redirect(reverse("core:home"))
+    except GithubException as error_context:
+        messages.error(request, error_context)
         return redirect(reverse("users:login"))
 
 
@@ -159,9 +155,9 @@ class kakaoException(Exception):
 def kakao_callback(request):
     try:
         code = request.GET.get("code", None)
+        if code is None:
+            raise GithubException("🤔🤔카카오톡 코드를 받을 수 없어요.")
         error = request.GET.get("error", None)
-        if code is None or error is not None:
-            raise kakaoException()
         client_id = os.environ.get("KAKAO_ID")
         redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
         token_request = requests.post(
@@ -171,7 +167,7 @@ def kakao_callback(request):
         print(token_json)
         error = token_json.get("error", None)
         if error is not None:
-            raise kakaoException()
+            raise kakaoException("😱😱카카오톡 인증 토큰을 받을 수 없어요.")
         access_token = token_json.get("access_token")
         profile_request = requests.get(
             "https://kapi.kakao.com/v2/user/me",
@@ -182,7 +178,7 @@ def kakao_callback(request):
         print(f"kakao_account: {kakao_account}")
         email = kakao_account.get("email", None)
         if email is None:
-            raise kakaoException()
+            raise kakaoException("😁😎가입을 위해 이메일 제공에 동의해주세요.")
         email_verified = kakao_account.get("is_email_verified")
         profile = kakao_account.get("profile")
         nickname = profile.get("nickname")
@@ -190,7 +186,7 @@ def kakao_callback(request):
         try:
             user = models.User.objects.get(email=email)
             if user.login_method != models.User.LOGIN_KAKAO:
-                raise kakaoException()
+                raise kakaoException(f"🧐이 계정은 [{user.login_method}]로 가입되어 있어요.")
         except models.User.DoesNotExist:
             user = models.User.objects.create(
                 username=email,
@@ -207,9 +203,10 @@ def kakao_callback(request):
                     f"{nickname}-avatar", ContentFile(photo_request.content)
                 )
         login(request, user)
+        messages.success(request, f"{user.first_name}님, 환영합니다! 🥰")
         return redirect(reverse("core:home"))
-    except kakaoException:
-        messages.error(request, "카카오 로그인(회원가입) 실패")
+    except kakaoException as error_context:
+        messages.error(request, error_context)
         return redirect(reverse("users:login"))
 
 
