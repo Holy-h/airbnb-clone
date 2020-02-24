@@ -34,7 +34,7 @@
 
       
       {% if user == user_obj %}
-        <a href="#" class="btn-link mt-10">프로필 수정</a>
+        <a href="{% url 'users:update' %}" class="btn-link mt-10">프로필 수정</a>
       {% endif %}
 
     </div>
