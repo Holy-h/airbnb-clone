@@ -16,7 +16,6 @@ class LoginView(mixins.LoggedOutOnlyView, FormView):
 
     template_name = "users/login.html"
     form_class = forms.LoginForm
-    success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
@@ -26,6 +25,12 @@ class LoginView(mixins.LoggedOutOnlyView, FormView):
             login(self.request, user)
             # to do - email_verified=False일 때, 인증 추가
         return super().form_valid(form)
+
+    def get_success_url(self):
+        next_arg = self.request.GET.get("next")
+        if next_arg is None:
+            return reverse("core:home")
+        return next_arg
 
 
 def log_out(request):
@@ -212,14 +217,14 @@ def kakao_callback(request):
         return redirect(reverse("users:login"))
 
 
-class UserProfileView(DetailView):
+class UserProfileView(mixins.LoggedInOnlyView, DetailView):
     """ UserProfileView Definition """
 
     model = models.User
     context_object_name = "user_obj"
 
 
-class UpdateProfileView(SuccessMessageMixin, UpdateView):
+class UpdateProfileView(mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
     """ UpdateProfileView Definition """
 
     model = models.User
@@ -252,7 +257,12 @@ class UpdateProfileView(SuccessMessageMixin, UpdateView):
         return form
 
 
-class UpdatePasswordView(SuccessMessageMixin, PasswordChangeView):
+class UpdatePasswordView(
+    mixins.LoggedInOnlyView,
+    mixins.EmailLoginOnlyView,
+    SuccessMessageMixin,
+    PasswordChangeView,
+):
     """ UpdatePasswordView Definition """
 
     template_name = "users/update_password.html"
