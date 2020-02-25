@@ -5,12 +5,13 @@ from django.views.generic import FormView, DetailView, UpdateView
 from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.base import ContentFile
-from . import forms, models
+from . import forms, models, mixins
 
 
-class LoginView(FormView):
+class LoginView(mixins.LoggedOutOnlyView, FormView):
     """ LoginView Definition """
 
     template_name = "users/login.html"
@@ -33,7 +34,7 @@ def log_out(request):
     return redirect(reverse("core:home"))
 
 
-class SignupView(FormView):
+class SignupView(mixins.LoggedOutOnlyView, FormView):
 
     """ SignupView Definition """
 
@@ -218,7 +219,7 @@ class UserProfileView(DetailView):
     context_object_name = "user_obj"
 
 
-class UpdateProfileView(UpdateView):
+class UpdateProfileView(SuccessMessageMixin, UpdateView):
     """ UpdateProfileView Definition """
 
     model = models.User
@@ -234,6 +235,7 @@ class UpdateProfileView(UpdateView):
         "language",
         "currency",
     )
+    success_message = "🥳프로필이 변경되었습니다."
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -250,10 +252,11 @@ class UpdateProfileView(UpdateView):
         return form
 
 
-class UpdatePasswordView(PasswordChangeView):
+class UpdatePasswordView(SuccessMessageMixin, PasswordChangeView):
     """ UpdatePasswordView Definition """
 
     template_name = "users/update_password.html"
+    success_message = "😉비밀번호가 변경되었습니다."
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
@@ -261,6 +264,9 @@ class UpdatePasswordView(PasswordChangeView):
         form.fields["new_password1"].widget.attrs = {"placeholder": "새 비밀번호"}
         form.fields["new_password2"].widget.attrs = {"placeholder": "새 비밀번호 확인"}
         return form
+
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()
 
 
 # Login
