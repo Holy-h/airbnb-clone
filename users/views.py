@@ -1,5 +1,6 @@
 import os
 import requests
+from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import FormView, DetailView, UpdateView
 from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
@@ -225,7 +226,8 @@ class UpdateProfileView(UpdateView):
     fields = (
         "first_name",
         "last_name",
-        "avatar",
+        # "avatar",
+        # to do - avatar 변경하는 form 만들기
         "gender",
         "bio",
         "birthdate",
@@ -235,6 +237,12 @@ class UpdateProfileView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class UpdatePasswordView(PasswordChangeView):
+    """ UpdatePasswordView Definition """
+
+    template_name = "users/update_password.html"
 
 
 # Login

@@ -17,6 +17,10 @@ module.exports = {
       xl: "1280px",
       xxl: "1440px"
     },
+    minHeight: {
+      '50vh': '50vh',
+      '75vh': '75vh'
+    }
   },
   variants: {},
   plugins: []

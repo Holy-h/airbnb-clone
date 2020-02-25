@@ -23,11 +23,17 @@
   @apply text-lg text-center text-white rounded-full py-2 font-medium w-full bg-purple-500;
 }
 
-input {
+input,
+textarea,
+select {
   @apply rounded-sm p-4 font-light w-full text-left border border-gray-400;
   &:focus {
     @apply outline-none border-teal-500;
   }
+}
+
+textarea {
+  @apply resize-none h-25vh;
 }
 
 form {
