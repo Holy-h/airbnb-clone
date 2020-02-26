@@ -31,7 +31,6 @@
       {% if not user_obj.email_verified %}
         <span class="mt-4 text-sm font-medium text-red-400">이메일 미인증</span>
       {% endif %}
-
       
       {% if user == user_obj %}
         <a href="{% url 'users:update' %}" class="btn-link mt-10">프로필 수정</a>

@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse
@@ -32,4 +33,7 @@ class LoggedInOnlyView(LoginRequiredMixin):
     """
 
     login_url = reverse_lazy("users:login")
-    # permission_denied_message = "⛔ 로그인이 필요한 페이지입니다."
+
+    def handle_no_permission(self):
+        messages.error(self.request, "⛔ 접근할 수 없는 페이지입니다.")
+        return super().handle_no_permission()

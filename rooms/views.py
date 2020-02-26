@@ -1,7 +1,9 @@
+from django.http import Http404
 from django.db.models import Q
 from django.views.generic import ListView, View, DetailView, UpdateView
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from users import mixins as User_mixins
 from . import models, forms
 
 
@@ -133,7 +135,7 @@ class SearchView(View):
         return render(request, "rooms/room_search.html", {"form": form})
 
 
-class EditRoomView(UpdateView):
+class EditRoomView(User_mixins.LoggedInOnlyView, UpdateView):
     """ 숙소를 수정하기 위한 View """
 
     model = models.Room
@@ -157,3 +159,21 @@ class EditRoomView(UpdateView):
         "house_rule",
     )
     template_name = "rooms/room_edit.html"
+
+    def get_object(self, queryset=None):
+        room = super().get_object(queryset=queryset)
+        if room.host.pk != self.request.user.pk:
+            raise Http404()
+        return room
+
+
+class RoomPhotosView(User_mixins.LoggedInOnlyView, DetailView):
+
+    model = models.Room
+    template_name = "room_photos.html"
+
+    def get_object(self, queryset=None):
+        room = super().get_object(queryset=queryset)
+        if room.host.pk != self.request.user.pk:
+            raise Http404()
+        return room
