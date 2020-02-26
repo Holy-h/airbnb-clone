@@ -1,8 +1,10 @@
 from django.http import Http404
 from django.db.models import Q
 from django.views.generic import ListView, View, DetailView, UpdateView
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from users import mixins as User_mixins
 from . import models, forms
 
@@ -177,3 +179,21 @@ class RoomPhotosView(User_mixins.LoggedInOnlyView, DetailView):
         if room.host.pk != self.request.user.pk:
             raise Http404()
         return room
+
+
+@login_required
+def delete_photo(request, room_pk, photo_pk):
+    user = request.user
+    try:
+        room = models.Room.objects.get(pk=room_pk)
+        if room.host.pk != user.pk:
+            messages.error(request, "⛔ 사진을 삭제할 수 없습니다.")
+            return redirect(reverse("core:home"))
+        else:
+            # photo_pk가 올바르지 않은 경우: 새로고침
+            models.Photo.objects.filter(pk=photo_pk).delete()
+            messages.success(request, "✔ 사진을 삭제했습니다.")
+        return redirect(reverse("rooms:photos", kwargs={"pk": room_pk}))
+    except models.Room.DoesNotExist:
+        messages.error(request, "존재하지 않는 숙소입니다.")
+        return redirect(reverse("core:home"))

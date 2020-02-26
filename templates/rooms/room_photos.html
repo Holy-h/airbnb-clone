@@ -9,7 +9,9 @@
 
 {% block content %}
   <div class="container mx-auto  mt-32 mb-10 flex flex-col">
-
+    <div class="p-4 mb-4 border-b border-gray-300">
+      <a href="{% url 'rooms:edit' pk=room.pk %}" class="text-blue-500 font-medium">뒤로 가기</a>
+    </div>
     {% for photo in room.photos.all %}
       <div class="mb-4 py-6 px-4 border border-gray-300 flex justify-between">
         <div class="flex items-start w-full">
@@ -18,7 +20,7 @@
         </div>
         <div class="flex flex-col w-32 justify-center">
           <a href="#" class="btn-link mb-4 text-base bg-blue-400">수정</a>
-          <a href="#" class="btn-link text-base bg-red-400">삭제</a>
+          <a href="{% url 'rooms:delete-photo' room_pk=room.pk photo_pk=photo.pk %}" class="btn-link text-base bg-red-400">삭제</a>
         </div>
       </div>
     {% endfor %}
