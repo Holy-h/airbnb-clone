@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  프로필 수정
+{% endblock page_title %}
+
+
+{% block search-bar %}
+{% endblock search-bar %}
+
+{% block content %}
+  <div class="container mx-auto py-10 px-6 mt-32 mb-10 flex flex-col items-center border border-gray-300 md:w-1/2 lg:w-5/12 xl:w-4/12">
+
+    {% include "mixins/room/room_form.html" with form=form cta="숙소 수정" %}
+
+  </div>
+
+{% endblock content %}

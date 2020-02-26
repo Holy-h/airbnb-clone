@@ -85,7 +85,11 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="w-3/12"></div>
+        <div class="w-3/12">
+            {% if room.host == user %}
+                <a href="{% url 'rooms:edit' room.pk %}" class="btn-link block">숙소 수정</a>
+            {% endif %}
+        </div>
     </div>
 
 {% endblock content %}

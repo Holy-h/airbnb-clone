@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.views.generic import ListView, View, DetailView
+from django.views.generic import ListView, View, DetailView, UpdateView
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from . import models, forms
@@ -131,3 +131,29 @@ class SearchView(View):
             form = forms.SearchForm()
 
         return render(request, "rooms/room_search.html", {"form": form})
+
+
+class EditRoomView(UpdateView):
+    """ 숙소를 수정하기 위한 View """
+
+    model = models.Room
+    fields = (
+        "name",
+        "description",
+        "country",
+        "city",
+        "price",
+        "address",
+        "guests",
+        "beds",
+        "bedrooms",
+        "baths",
+        "check_in",
+        "check_out",
+        "instant_book",
+        "room_type",
+        "amenities",
+        "facilities",
+        "house_rule",
+    )
+    template_name = "rooms/room_edit.html"
