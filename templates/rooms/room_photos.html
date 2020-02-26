@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  {{room.name}}'s Photos
+{% endblock page_title %}
+
+{% block search-bar %}
+{% endblock search-bar %}
+
+{% block content %}
+  <div class="container mx-auto  mt-32 mb-10 flex flex-col">
+
+    {% for photo in room.photos.all %}
+      <div class="mb-4 py-6 px-4 border border-gray-300 flex justify-between">
+        <div class="flex items-start w-full">
+          <img src="{{photo.file.url}}" class="w-32 h-32 mr-4">
+          <span class="text-lg">{{photo.caption}}</span>
+        </div>
+        <div class="flex flex-col w-32 justify-center">
+          <a href="#" class="btn-link mb-4 text-base bg-blue-400">수정</a>
+          <a href="#" class="btn-link text-base bg-red-400">삭제</a>
+        </div>
+      </div>
+    {% endfor %}
+
+  </div>
+
+{% endblock content %}

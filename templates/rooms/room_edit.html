@@ -4,7 +4,6 @@
   숙소 수정
 {% endblock page_title %}
 
-
 {% block search-bar %}
 {% endblock search-bar %}
 
@@ -14,9 +13,9 @@
     {% include "mixins/room/room_form.html" with form=form cta="숙소 수정" %}
 
     <div class="mt-4">
-        <a href="#" class="font-bold text-teal-600">사진 수정하기</a>
+        <a href="{% url 'rooms:photos' room.pk %}" class="font-bold text-teal-600 ">사진 수정하기</a>
     </div>
-
+    
   </div>
 
 {% endblock content %}
