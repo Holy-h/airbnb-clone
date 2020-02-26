@@ -100,4 +100,8 @@ form {
   }
 }
 
+.border-section {
+  @apply border-b border-gray-400 py-6;
+}
+
 @tailwind utilities;

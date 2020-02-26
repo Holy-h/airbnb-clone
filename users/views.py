@@ -28,6 +28,7 @@ class LoginView(mixins.LoggedOutOnlyView, FormView):
 
     def get_success_url(self):
         next_arg = self.request.GET.get("next")
+        messages.info(self.request, f"{self.request.user.first_name}님, 반가워요! 🤭")
         if next_arg is None:
             return reverse("core:home")
         return next_arg

@@ -1,6 +1,6 @@
-<div class="w-1/4 mb-10 px-2">
+<div class="w-full sm:w-1/2 lg:w-1/4 mb-10 px-2">
     <a href="{% url 'rooms:detail' room.pk %}">
-        <div class="w-full h-64 bg-cover bg-center rounded-lg mb-2" style="background-image: url({{room.first_photo}});">
+        <div class="w-full h-64 bg-cover bg-center rounded-lg mb-2" style="background-image: url({{room.get_first_photo}});">
         </div>
         <div class="flex justify-between mb-2">
             <div class="flex w-10/12">
@@ -10,9 +10,9 @@
                 <span class="text-sm text-gray-600 block truncate">{{room.city}}, {{room.country.name}}</span>
             </div>
             
-            {% if room.total_rating != 0 %}
+            {% if room.get_total_rating != 0 %}
                 <span class="text-sm flex items-center">
-                    <i class="fas fa-star text-red-500 text-xs mr-1"></i>{{room.total_rating}}
+                    <i class="fas fa-star text-red-500 text-xs mr-1"></i>{{room.get_total_rating}}
                 </span>
             {% endif %}
                 

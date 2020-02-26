@@ -5,34 +5,63 @@
 {% endblock page_title %}
 
 {% block content %}
-    <div>
-        <h1>{{room.name}}</h1>
-        <h3>{{room.description}}</h3>
+    <div class="container max-w-full mb-20 flex h-50vh lg:h-75vh">
+        <div class="h-full w-full sm:w-1/2 bg-cover bg-center border border-gray-500" style="background-image: url({{room.get_first_photo}})"></div>
+        <div class="h-full w-0 sm:w-1/2 flex flex-wrap">
+            {% for photo in room.get_next_four_photos %}
+                <div class="h-auto w-1/2 bg-cover bg-center border border-gray-500" style="background-image: url({{photo}})"></div>
+            {% endfor %}
+        </div>
     </div>
-    <div>
-        <h2>
-            By: <a href="{{room.host.get_absolute_url}}">{{room.host.username}}</a>
-            {% if room.host.superhost %}
-                (superhost)
-            {% endif %}
-        </h2>
-        <h3>Amenities</h3>
-        <ul>
-            {% for a in room.amenities.all %}
-                <li>{{a}}</li>
-            {% endfor %}
-        </ul>
-        <h3>Facilities</h3>
-        <ul>
-            {% for f in room.facilities.all %}
-                <li>{{f}}</li>
-            {% endfor %}
-        </ul>
-        <h3>House Rules</h3>
-        <ul>
-            {% for h in room.house_rule.all %}
-                <li>{{h}}</li>
-            {% endfor %}
-        </ul>
+
+    <div class="container mx-auto flex justify-around pb-56">
+        <div class="w-8/12">
+            <div class="flex justify-between">
+                <div class="mr-6">
+                    <h4 class="text-2xl font-medium">{{room.name}}</h4>
+                    <span class="text-gray-700 font-light">{{room.city}}</span>
+                </div>
+                <a href="{{room.host.get_absolute_url}}" class="flex flex-col items-center">
+                    {% include "mixins/user_avatar.html" with user=room.host %}
+                    <span class="mt-1 font-medium text-gray-500">{{room.host.first_name}}</span>
+                </a>
+            </div>
+            <div class="flex border-section">
+                <span class="mr-6">인원 {{room.guests}}명</span>
+                <span class="mr-6">침대 {{room.beds}}개</span>
+                <span class="mr-6">침실 {{room.bedrooms}}개</span>
+                <span class="mr-6">욕실 {{room.baths}}개</span>
+            </div>
+            <div class="border-section">
+                <span class="">{{room.room_type}}</span>
+            </div>
+            <p class="border-section">{{room.description}}</p>
+            <div class="border-section">
+                <h4 class="font-semibold text-lg mb-4">편의시설</h4>
+                {% for a in room.amenities.all %}
+                    <li class="mb-2">{{a}}</li>
+                {% endfor %}
+            </div>
+            <div class="border-section">
+                <h4 class="font-semibold text-2xl mb-4">후기</h4>
+                <div class="font-semibold text-lg">
+                    ⭐ {{room.get_total_rating}} | {{room.reviews.count}} 후기
+                </div>
+            </div>
+            <div class="border-section">
+                <h4 class="font-semibold text-lg mb-4">시설</h4>
+                {% for f in room.facilities.all %}
+                    <li class="mb-2">{{f}}</li>
+                {% endfor %}
+            </div>
+            <div class="border-section">
+                <h4 class="font-semibold text-lg mb-4">숙소 이용규칙</h4>
+                {% for r in room.house_rule.all %}
+                    <li class="mb-2">{{r}}</li>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="w-3/12"></div>
     </div>
+
 {% endblock content %}

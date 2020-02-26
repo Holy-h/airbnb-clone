@@ -42,7 +42,7 @@
     <div class="container flex flex-col items-center mx-auto mb-20">
       <span class="mb-10 font-semibold text-xl">{{user_obj.first_name}}의 숙소</span>
       {% if user_obj.rooms.count > 0 %}
-        <div class="flex flex-wrap mb-10">
+        <div class="flex flex-wrap mb-10 w-full">
           {% for room in user_obj.rooms.all %}
             {% include "mixins/room_card.html" with room=room %}
           {% endfor %}
