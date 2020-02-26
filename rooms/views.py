@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from users import mixins as User_mixins
 from . import models, forms
 
@@ -197,3 +198,18 @@ def delete_photo(request, room_pk, photo_pk):
     except models.Room.DoesNotExist:
         messages.error(request, "존재하지 않는 숙소입니다.")
         return redirect(reverse("core:home"))
+
+
+class EditPhotoView(User_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
+    """ 숙소 사진 수정 View """
+
+    model = models.Photo
+    template_name = "rooms/photo_edit.html"
+    pk_url_kwarg = "photo_pk"
+    fields = ("caption",)
+    success_message = "✔ 사진을 수정했습니다."
+
+    # Model.Photo에서 get_absolute_url을 통해 같은 방식을 취할 수 있음
+    # def get_success_url(self):
+    #     room_pk = self.kwargs.get("room_pk")
+    #     return reverse("room:photos", kwargs={'pk': room_pk})
