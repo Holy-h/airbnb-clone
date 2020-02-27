@@ -30,11 +30,14 @@ class SearchForm(forms.Form):
 
 
 class CreatePhotoForm(forms.ModelForm):
+    """ 숙소 사진 추가 Form """
+
     class Meta:
         model = models.Photo
         fields = ("caption", "file")
 
     def save(self, pk, *args, **kwargs):
-        models.Room.objects.get(pk=pk)
         photo = super().save(commit=False)
-        print(pk)
+        room = models.Room.objects.get(pk=pk)
+        photo.room = room
+        photo.save()

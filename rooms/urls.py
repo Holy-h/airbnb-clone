@@ -10,7 +10,7 @@ urlpatterns = [
     path("<int:pk>/photos/add", views.CreatePhotoView.as_view(), name="add-photos"),
     path(
         "<int:room_pk>/photos/<int:photo_pk>/delete/",
-        views.delete_photo,
+        views.DeletePhotoView.as_view(),
         name="delete-photo",
     ),
     path(

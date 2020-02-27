@@ -1,9 +1,17 @@
 from django.http import Http404
 from django.db.models import Q
-from django.views.generic import ListView, View, DetailView, UpdateView, FormView
-from django.shortcuts import render, redirect, reverse
+from django.views.generic import (
+    ListView,
+    View,
+    DetailView,
+    UpdateView,
+    FormView,
+    DeleteView,
+)
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.urls import reverse
+from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from users import mixins as User_mixins
@@ -171,6 +179,7 @@ class EditRoomView(User_mixins.LoggedInOnlyView, UpdateView):
 
 
 class RoomPhotosView(User_mixins.LoggedInOnlyView, DetailView):
+    """ 숙소 사진 목록 View """
 
     model = models.Room
     template_name = "rooms/room_photos.html"
@@ -182,35 +191,67 @@ class RoomPhotosView(User_mixins.LoggedInOnlyView, DetailView):
         return room
 
 
-class CreatePhotoView(User_mixins.LoggedInOnlyView, SuccessMessageMixin, FormView):
+class CreatePhotoView(User_mixins.LoggedInOnlyView, UserPassesTestMixin, FormView):
+    """ 숙소 사진 생성 View """
 
     model = models.Photo
     template_name = "rooms/photo_create.html"
     fields = ("caption", "file")
     form_class = forms.CreatePhotoForm
 
+    def test_func(self):
+        room_pk = self.kwargs.get("pk")
+        room = models.Room.objects.get(pk=room_pk)
+        return room.host.pk == self.request.user.pk
+
+    def handle_no_permission(self):
+        messages.error(self.request, "⛔ 권한이 없는 페이지입니다.")
+        return redirect(reverse("core:home"))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # room_pk = self.kwargs.get("pk")
+        context["room_pk"] = self.kwargs.get("pk")
+        return context
+
     def form_valid(self, form):
         # form은 kwargs를 모르기에 view에서 form에 전달해줌
         room_pk = self.kwargs.get("pk")
         form.save(room_pk)
-
-
-@login_required
-def delete_photo(request, room_pk, photo_pk):
-    user = request.user
-    try:
-        room = models.Room.objects.get(pk=room_pk)
-        if room.host.pk != user.pk:
-            messages.error(request, "⛔ 사진을 삭제할 수 없습니다.")
-            return redirect(reverse("core:home"))
-        else:
-            # photo_pk가 올바르지 않은 경우: 새로고침
-            models.Photo.objects.filter(pk=photo_pk).delete()
-            messages.success(request, "✔ 사진을 삭제했습니다.")
+        messages.success(self.request, "사진이 업로드되었습니다.")
         return redirect(reverse("rooms:photos", kwargs={"pk": room_pk}))
-    except models.Room.DoesNotExist:
-        messages.error(request, "존재하지 않는 숙소입니다.")
-        return redirect(reverse("core:home"))
+
+
+class DeletePhotoView(User_mixins.LoggedInOnlyView, SuccessMessageMixin, DeleteView):
+    """ 숙소 사진 삭제 View """
+
+    model = models.Photo
+    pk_url_kwarg = "photo_pk"
+    template_name = "rooms/photo_delete.html"
+
+    def get_object(self, queryset=None):
+        photo = super().get_object(queryset=queryset)
+        if photo.room.host.pk != self.request.user.pk:
+            raise Http404()
+        return photo
+
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user
+        room_pk = self.kwargs.get("room_pk")
+        try:
+            room = models.Room.objects.get(pk=room_pk)
+            if room.host.pk != user.pk:
+                messages.error(self.request, "⛔ 사진을 삭제할 수 없습니다.")
+                return redirect(reverse("core:home"))
+        except models.Room.DoesNotExist:
+            messages.error(self.request, "존재하지 않는 숙소입니다.")
+            return redirect(reverse("core:home"))
+        return super().delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        room_pk = self.kwargs.get("room_pk")
+        messages.success(self.request, "✔ 사진을 삭제했습니다.")
+        return reverse("rooms:photos", kwargs={"pk": room_pk})
 
 
 class EditPhotoView(User_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateView):
@@ -221,6 +262,12 @@ class EditPhotoView(User_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateVie
     pk_url_kwarg = "photo_pk"
     fields = ("caption",)
     success_message = "✔ 사진을 수정했습니다."
+
+    def get_object(self, queryset=None):
+        photo = super().get_object(queryset=queryset)
+        if photo.room.host.pk != self.request.user.pk:
+            raise Http404()
+        return photo
 
     # Model.Photo에서 get_absolute_url을 통해 같은 방식을 취할 수 있음
     # def get_success_url(self):
