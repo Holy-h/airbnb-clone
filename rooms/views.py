@@ -1,6 +1,6 @@
 from django.http import Http404
 from django.db.models import Q
-from django.views.generic import ListView, View, DetailView, UpdateView
+from django.views.generic import ListView, View, DetailView, UpdateView, FormView
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
@@ -180,6 +180,19 @@ class RoomPhotosView(User_mixins.LoggedInOnlyView, DetailView):
         if room.host.pk != self.request.user.pk:
             raise Http404()
         return room
+
+
+class CreatePhotoView(User_mixins.LoggedInOnlyView, SuccessMessageMixin, FormView):
+
+    model = models.Photo
+    template_name = "rooms/photo_create.html"
+    fields = ("caption", "file")
+    form_class = forms.CreatePhotoForm
+
+    def form_valid(self, form):
+        # form은 kwargs를 모르기에 view에서 form에 전달해줌
+        room_pk = self.kwargs.get("pk")
+        form.save(room_pk)
 
 
 @login_required

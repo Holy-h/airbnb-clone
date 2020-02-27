@@ -9,10 +9,14 @@
 
 {% block content %}
   <div class="container mx-auto mt-32 mb-10 flex flex-col">
-    <div class="p-4 mb-4 border-b border-gray-300">
+    <div class="p-4 mb-4 border-b border-gray-300 flex justify-between items-center">
       <a href="{% url 'rooms:edit' pk=room.pk %}" class="text-blue-500 font-medium">
         <i class="fas fa-arrow-left"></i>
         <span>숙소 수정</span>
+      </a>
+      <a href="{% url 'rooms:add-photos' pk=room.pk %}" class="font-medium text-base btn-link w-40">
+        <i class="fas fa-image"></i>
+        <span>사진 업로드</span>
       </a>
     </div>
     {% for photo in room.photos.all %}
