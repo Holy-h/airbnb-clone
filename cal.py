@@ -30,7 +30,6 @@ class Calendar(calendar.Calendar):
         for week in weeks:
             for day, _ in week:
                 days.append(day)
-        print(days)
         return days
 
     def get_month(self):
