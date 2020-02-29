@@ -113,12 +113,21 @@ class Room(core_models.TimeStampedModel):
         return 0
 
     def get_first_photo(self):
-        (photo,) = self.photos.all()[:1]
-        return photo.file.url
+        try:
+            (photo,) = self.photos.all()[:1]
+            return photo.file.url
+        except ValueError:
+            # ↓ Todo: default 이미지 url 넣기
+            return None
 
     def get_next_four_photos(self):
         photos = self.photos.all()[1:5]
         photos_url = []
-        for photo in photos:
-            photos_url.append(photo.file.url)
-        return photos_url
+        if photos.exists():
+            for photo in photos:
+                print(photo)
+                photos_url.append(photo.file.url)
+            return photos_url
+        else:
+            # ↓ Todo: default 이미지 url 넣기
+            return [None, None, None, None]

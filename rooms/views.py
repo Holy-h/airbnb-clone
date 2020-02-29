@@ -194,9 +194,7 @@ class RoomPhotosView(User_mixins.LoggedInOnlyView, DetailView):
 class CreatePhotoView(User_mixins.LoggedInOnlyView, UserPassesTestMixin, FormView):
     """ 숙소 사진 생성 View """
 
-    model = models.Photo
     template_name = "rooms/photo_create.html"
-    fields = ("caption", "file")
     form_class = forms.CreatePhotoForm
 
     def test_func(self):
@@ -218,7 +216,7 @@ class CreatePhotoView(User_mixins.LoggedInOnlyView, UserPassesTestMixin, FormVie
         # form은 kwargs를 모르기에 view에서 form에 전달해줌
         room_pk = self.kwargs.get("pk")
         form.save(room_pk)
-        messages.success(self.request, "사진이 업로드되었습니다.")
+        messages.success(self.request, "뀨! 사진이 업로드되었습니다.")
         return redirect(reverse("rooms:photos", kwargs={"pk": room_pk}))
 
 
@@ -273,3 +271,31 @@ class EditPhotoView(User_mixins.LoggedInOnlyView, SuccessMessageMixin, UpdateVie
     # def get_success_url(self):
     #     room_pk = self.kwargs.get("room_pk")
     #     return reverse("room:photos", kwargs={'pk': room_pk})
+
+
+class CreateRoomView(User_mixins.LoggedInOnlyView, UserPassesTestMixin, FormView):
+    """ 숙소 추가 View """
+
+    template_name = "rooms/room_create.html"
+    form_class = forms.CreateRoomForm
+
+    def test_func(self):
+        try:
+            is_hosting = self.request.session["is_hosting"]
+            return is_hosting
+        except KeyError:
+            return False
+
+    def handle_no_permission(self):
+        messages.error(self.request, "⛔ 관리자 모드일 때 접근 가능한 페이지입니다.")
+        return redirect(reverse("core:home"))
+
+    def form_valid(self, form):
+        room = form.save()
+        room.host = self.request.user
+        room.save()
+        # ↑ 새로 만든 숙소는 db에 저장됨
+        form.save_m2m()
+        messages.success(self.request, "숙소가 업로드 되었습니다.")
+        return redirect(reverse("rooms:detail", kwargs={"pk": room.pk}))
+

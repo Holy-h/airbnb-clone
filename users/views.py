@@ -1,12 +1,13 @@
 import os
 import requests
-from django.contrib.auth.views import PasswordChangeView
 from django.views.generic import FormView, DetailView, UpdateView
 from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.decorators import login_required
 from django.core.files.base import ContentFile
 from . import forms, models, mixins
 
@@ -280,8 +281,10 @@ class UpdatePasswordView(
         return self.request.user.get_absolute_url()
 
 
-# Login
-# https://docs.djangoproject.com/en/3.0/topics/auth/default/#how-to-log-a-user-in
-
-# LoginView
-# https://docs.djangoproject.com/en/3.0/topics/auth/default/#all-authentication-views
+@login_required
+def switch_hosting(request):
+    try:
+        del request.session["is_hosting"]
+    except KeyError:
+        request.session["is_hosting"] = True
+    return redirect(reverse("core:home"))
