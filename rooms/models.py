@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django_countries.fields import CountryField
 from core import models as core_models
+from cal import Calendar
 
 
 class AbstractItem(core_models.TimeStampedModel):
@@ -125,9 +126,13 @@ class Room(core_models.TimeStampedModel):
         photos_url = []
         if photos.exists():
             for photo in photos:
-                print(photo)
                 photos_url.append(photo.file.url)
             return photos_url
         else:
             # ↓ Todo: default 이미지 url 넣기
             return [None, None, None, None]
+
+    def get_calendars(self):
+        calendar = Calendar(2020, 2)
+        print(calendar.get_month())
+        return False

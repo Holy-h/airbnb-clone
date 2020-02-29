@@ -173,7 +173,6 @@ def kakao_callback(request):
             f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}"
         )
         token_json = token_request.json()
-        print(token_json)
         error = token_json.get("error", None)
         if error is not None:
             raise kakaoException("😱😱카카오톡 인증 토큰을 받을 수 없어요.")
@@ -184,7 +183,6 @@ def kakao_callback(request):
         )
         profile_json = profile_request.json()
         kakao_account = profile_json.get("kakao_account")
-        print(f"kakao_account: {kakao_account}")
         email = kakao_account.get("email", None)
         if email is None:
             raise kakaoException("😁😎가입을 위해 이메일 제공에 동의해주세요.")
