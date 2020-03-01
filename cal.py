@@ -1,5 +1,5 @@
-from django.utils import timezone
 import calendar
+from django.utils import timezone
 
 
 class Day:
