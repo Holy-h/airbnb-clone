@@ -5,9 +5,11 @@ from django.utils import timezone
 class Day:
     """ Day Class """
 
-    def __init__(self, number, is_past):
+    def __init__(self, number, is_past, month, year):
         self.number = number
         self.is_past = is_past
+        self.month = month
+        self.year = year
 
     def __str__(self):
         return str(self.number)
@@ -46,8 +48,11 @@ class Calendar(calendar.Calendar):
             for day, _ in week:
                 is_past = False
                 if self.month <= month:
+                    # To do - 이번달이 12월인 경우
                     is_past = bool(day < today or self.month < month)
-                new_day = Day(day, is_past)
+                new_day = Day(
+                    number=day, is_past=is_past, month=self.month, year=self.year
+                )
                 days.append(new_day)
         return days
 

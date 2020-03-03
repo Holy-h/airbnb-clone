@@ -18,3 +18,21 @@ class ReservationAdmin(admin.ModelAdmin):
     )
 
     list_filter = ("status",)
+
+
+@admin.register(models.BookedDay)
+class BookedDayAdmin(admin.ModelAdmin):
+
+    """ BookedDay Admin Definition """
+
+    list_display = ("day", "get_room_name", "get_room_guest")
+
+    def get_room_name(self, obj):
+        return obj.reservation.room.name
+
+    get_room_name.short_description = "room name"
+
+    def get_room_guest(self, obj):
+        return obj.reservation.guest
+
+    get_room_guest.short_description = "room guest"

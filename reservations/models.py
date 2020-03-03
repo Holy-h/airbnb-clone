@@ -1,6 +1,21 @@
+import datetime
 from django.db import models
 from django.utils import timezone
 from core import models as core_models
+
+
+class BookedDay(core_models.TimeStampedModel):
+    """ BookedDay Model Definition """
+
+    day = models.DateField()
+    reservation = models.ForeignKey("Reservation", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Booked Day"
+        verbose_name_plural = "Booked Days"
+
+    def __str__(self):
+        return f"{self.day}_{self.reservation.room.name}"
 
 
 class Reservation(core_models.TimeStampedModel):
@@ -41,3 +56,22 @@ class Reservation(core_models.TimeStampedModel):
         return now > self.check_out
 
     is_finished.boolean = True
+
+    def save(self, *args, **kwargs):
+        # if self.pk is None:
+        if True:
+            check_in = self.check_in
+            check_out = self.check_out
+            period = check_out - check_in
+            is_booked = BookedDay.objects.filter(
+                day__range=(check_in, check_out), reservation__room=self.room
+            ).exists()
+            if not is_booked:
+                super().save(*args, **kwargs)
+                # ↓ 시작을 포함하는 경우에는 1을 더해준다
+                for i in range(period.days + 1):
+                    day = check_in + datetime.timedelta(days=i)
+                    BookedDay.objects.create(day=day, reservation=self)
+                return
+        else:
+            return super().save(*args, **kwargs)
