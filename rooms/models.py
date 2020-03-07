@@ -23,6 +23,8 @@ class RoomType(AbstractItem):
 
     """ RoomType Model Definition """
 
+    description = models.TextField(null=True)
+
     class Meta:
         verbose_name = "Room Type"
         ordering = ["name"]

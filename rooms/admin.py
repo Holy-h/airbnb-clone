@@ -3,7 +3,7 @@ from django.utils.html import mark_safe
 from . import models
 
 
-@admin.register(models.RoomType, models.Amenity, models.Facility, models.HouseRule)
+@admin.register(models.Amenity, models.Facility, models.HouseRule)
 class ItemAdmin(admin.ModelAdmin):
 
     """ Item Admin Definition """
@@ -13,7 +13,15 @@ class ItemAdmin(admin.ModelAdmin):
     def used_by(self, obj):
         return obj.rooms.count()
 
-    pass
+
+@admin.register(models.RoomType)
+class RoomTypeAdmin(admin.ModelAdmin):
+    model = models.HouseRule
+
+    list_display = ("name", "description", "used_by")
+
+    def used_by(self, obj):
+        return obj.rooms.count()
 
 
 class PhotoInline(admin.TabularInline):

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  예약 {{reservation.check_in}}
+{% endblock page_title %}
+
+{% block search-bar %}
+{% endblock search-bar %}
+
+{% block content %}
+  <div class="container mx-auto mt-32 mb-10 flex flex-col">
+    <div class="p-4 mb-4 border-b border-gray-300 flex justify-between items-center">
+      <a href="#" class="text-blue-500 font-medium">
+        <i class="fas fa-arrow-left"></i>
+        <span>숙소 수정</span>
+      </a>
+      <a href="#" class="font-medium text-base btn-link w-40">
+        <i class="fas fa-image"></i>
+        <span>사진 업로드</span>
+      </a>
+    </div>
+    
+
+  </div>
+
+{% endblock content %}
