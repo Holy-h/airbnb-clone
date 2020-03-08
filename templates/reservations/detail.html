@@ -43,9 +43,9 @@
       <div class="py-10 px-4 flex flex-col">
         
         {% if reservation.status == 'pending' %}
-          <a href="#" class="btn-link px-10 bg-red-500 text-base py-4">Cancel Reservation</a>
+          <a href="{% url 'reservations:edit' reservation.pk 'cancel' %}" class="btn-link px-10 bg-red-500 text-base py-4">Cancel Reservation</a>
           {% if reservation.room.host == user %}
-            <a href="#" class="btn-link px-10 bg-blue-500 text-base mt-4 py-4">Confirm Reservation</a>
+            <a href="{% url 'reservations:edit' reservation.pk 'confirm' %}" class="btn-link px-10 bg-blue-500 text-base mt-4 py-4">Confirm Reservation</a>
           {% endif %}
         {% endif %}
           

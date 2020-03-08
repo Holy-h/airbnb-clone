@@ -8,6 +8,8 @@ from . import models as reservation_models
 
 
 class CreateError(Exception):
+    """ Exception Error class """
+
     pass
 
 
@@ -37,6 +39,8 @@ def create(request, room, year, month, day):
 
 
 class ReservationDetailView(View):
+    """ View of Reservation Detail """
+
     def get(self, *args, **kwargs):
         pk = kwargs.get("pk")
         reservation = reservation_models.Reservation.objects.get_or_none(pk=pk)
@@ -49,3 +53,26 @@ class ReservationDetailView(View):
             self.request, "reservations/detail.html", {"reservation": reservation}
         )
 
+
+def edit_reservation(request, pk, verb):
+    reservation = reservation_models.Reservation.objects.get_or_none(pk=pk)
+    is_guest = reservation.guest == request.user
+    is_host = reservation.room.host == request.user
+
+    if not reservation or (not is_host and not is_guest):
+        raise Http404()
+
+    print(reservation.status)
+    print(reservation.room.name)
+
+    if verb == "confirm":
+        reservation.status = reservation_models.Reservation.STATUS_CONFIRMED
+        print("확인 됨")
+    elif verb == "cancel":
+        print("취소 됨")
+        reservation.status = reservation_models.Reservation.STATUS_CANCELED
+
+    print(reservation.status)
+    reservation.save()
+    messages.success(request, "예약 내용이 변경되었습니다")
+    return redirect(reverse("reservations:detail", kwargs={"pk": reservation.pk}))
