@@ -62,17 +62,13 @@ def edit_reservation(request, pk, verb):
     if not reservation or (not is_host and not is_guest):
         raise Http404()
 
-    print(reservation.status)
-    print(reservation.room.name)
-
     if verb == "confirm":
         reservation.status = reservation_models.Reservation.STATUS_CONFIRMED
-        print("확인 됨")
-    elif verb == "cancel":
-        print("취소 됨")
-        reservation.status = reservation_models.Reservation.STATUS_CANCELED
 
-    print(reservation.status)
+    elif verb == "cancel":
+        reservation.status = reservation_models.Reservation.STATUS_CANCELED
+        reservation_models.BookedDay.objects.filter(reservation=reservation).delete()
+
     reservation.save()
     messages.success(request, "예약 내용이 변경되었습니다")
     return redirect(reverse("reservations:detail", kwargs={"pk": reservation.pk}))

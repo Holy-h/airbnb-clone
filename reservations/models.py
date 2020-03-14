@@ -24,13 +24,13 @@ class Reservation(core_models.TimeStampedModel):
     """ Reservation Model Definition """
 
     STATUS_PENDING = "pending"
-    STATUS_CONFIRMED = "confirm"
-    STATUS_CANCELED = "cancel"
+    STATUS_CONFIRMED = "confirmed"
+    STATUS_CANCELED = "canceled"
 
     STATUS_CHOICES = (
         (STATUS_PENDING, "Pending"),
-        (STATUS_CONFIRMED, "Confirm"),
-        (STATUS_CANCELED, "Cancel"),
+        (STATUS_CONFIRMED, "Confirmed"),
+        (STATUS_CANCELED, "Canceled"),
     )
 
     status = models.CharField(
@@ -63,8 +63,7 @@ class Reservation(core_models.TimeStampedModel):
     is_finished.boolean = True
 
     def save(self, *args, **kwargs):
-        # if self.pk is None:
-        if True:
+        if self.pk is None:
             check_in = self.check_in
             check_out = self.check_out
             period = check_out - check_in
