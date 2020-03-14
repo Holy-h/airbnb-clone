@@ -29,7 +29,7 @@
         {{reservation.room.name}}
       </div>
   
-      <div class="flex py-10 px-4 border-b w-full">
+      <div class="flex py-10 px-4 {% if reservation.status != 'canceled' %} border-b {% endif %} w-full">
         <a href="{{reservation.room.host.get_absolute_url}}" class="flex flex-col items-center">
           {% include "mixins/user_avatar.html" with user=reservation.room.host %}
           <span class="mt-1 font-medium text-gray-500">{{reservation.room.host.first_name}}</span>
@@ -40,16 +40,37 @@
         </div>
       </div>
   
-      <div class="py-10 px-4 flex flex-col">
-        
-        {% if reservation.status == 'pending' %}
-          <a href="{% url 'reservations:edit' reservation.pk 'cancel' %}" class="btn-link px-10 bg-red-500 text-base py-4">Cancel Reservation</a>
-          {% if reservation.room.host == user %}
-            <a href="{% url 'reservations:edit' reservation.pk 'confirm' %}" class="btn-link px-10 bg-blue-500 text-base mt-4 py-4">Confirm Reservation</a>
-          {% endif %}
-        {% endif %}
+      
+      {% if reservation.status != 'canceled' %}
+        <div class="py-10 px-4 flex flex-col w-full">
+          {% if reservation.status == 'confirmed' and reservation.is_finished %}
+            <span class="font-semibold text-2xl text-center block w-full mb-4">이 숙소는 어땠나요?</span>
+            <form action="{% url 'reviews:create' room=reservation.room.pk %}" method="post"
+            class="w-full md:w-1/2 mx-auto"
+            >
+              {% csrf_token %}
+              {{form}}
+              <button class="btn mt-10 bg-indigo-500 text-white">리뷰 작성</button>
+            </form>
           
-      </div>
+          {% else %}
+
+            {% if reservation.status == 'pending' %}
+              <a
+              href="{% url 'reservations:edit' reservation.pk 'cancel' %}"
+              class="btn-link px-10 bg-red-500 text-base py-4"
+              >Cancel Reservation</a>
+              {% if reservation.room.host == user %}
+                <a
+                href="{% url 'reservations:edit' reservation.pk 'confirm' %}"
+                class="btn-link px-10 bg-blue-500 text-base mt-4 py-4"
+                >Confirm Reservation</a>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        </div>
+      {% endif %}
+          
     </div>
     
 

@@ -4,6 +4,7 @@ from django.views.generic import View
 from django.contrib import messages
 from django.shortcuts import redirect, reverse, render
 from rooms import models as room_models
+from reviews import forms as review_forms
 from . import models as reservation_models
 
 
@@ -49,8 +50,13 @@ class ReservationDetailView(View):
 
         if not reservation or (not is_host and not is_guest):
             raise Http404()
+
+        form = review_forms.CreateReviewForm()
+
         return render(
-            self.request, "reservations/detail.html", {"reservation": reservation}
+            self.request,
+            "reservations/detail.html",
+            {"reservation": reservation, "form": form},
         )
 
 
@@ -64,6 +70,7 @@ def edit_reservation(request, pk, verb):
 
     if verb == "confirm":
         reservation.status = reservation_models.Reservation.STATUS_CONFIRMED
+        # Todo
 
     elif verb == "cancel":
         reservation.status = reservation_models.Reservation.STATUS_CANCELED
