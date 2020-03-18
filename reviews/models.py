@@ -10,38 +10,38 @@ class Review(core_models.TimeStampedModel):
     review = models.TextField()
     accuracy = models.IntegerField(
         validators=[
-            MaxValueValidator(10, message="0 <= 점수 <= 10"),
-            MinValueValidator(0, message="0 <= 점수 <= 10"),
+            MaxValueValidator(5, message="1~5 사이의 수를 입력하세요"),
+            MinValueValidator(1, message="1~5 사이의 수를 입력하세요"),
         ]
     )
     communication = models.IntegerField(
         validators=[
-            MaxValueValidator(10, message="0 <= 점수 <= 10"),
-            MinValueValidator(0, message="0 <= 점수 <= 10"),
+            MaxValueValidator(5, message="1~5 사이의 수를 입력하세요"),
+            MinValueValidator(1, message="1~5 사이의 수를 입력하세요"),
         ]
     )
     cleanliness = models.IntegerField(
         validators=[
-            MaxValueValidator(10, message="0 <= 점수 <= 10"),
-            MinValueValidator(0, message="0 <= 점수 <= 10"),
+            MaxValueValidator(5, message="1~5 사이의 수를 입력하세요"),
+            MinValueValidator(1, message="1~5 사이의 수를 입력하세요"),
         ]
     )
     location = models.IntegerField(
         validators=[
-            MaxValueValidator(10, message="0 <= 점수 <= 10"),
-            MinValueValidator(0, message="0 <= 점수 <= 10"),
+            MaxValueValidator(5, message="1~5 사이의 수를 입력하세요"),
+            MinValueValidator(1, message="1~5 사이의 수를 입력하세요"),
         ]
     )
     check_in = models.IntegerField(
         validators=[
-            MaxValueValidator(10, message="0 <= 점수 <= 10"),
-            MinValueValidator(0, message="0 <= 점수 <= 10"),
+            MaxValueValidator(5, message="1~5 사이의 수를 입력하세요"),
+            MinValueValidator(1, message="1~5 사이의 수를 입력하세요"),
         ]
     )
     value = models.IntegerField(
         validators=[
-            MaxValueValidator(10, message="0 <= 점수 <= 10"),
-            MinValueValidator(0, message="0 <= 점수 <= 10"),
+            MaxValueValidator(5, message="1~5 사이의 수를 입력하세요"),
+            MinValueValidator(1, message="1~5 사이의 수를 입력하세요"),
         ]
     )
     user = models.ForeignKey(

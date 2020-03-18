@@ -4,6 +4,7 @@ from django.urls import reverse
 from django_countries.fields import CountryField
 from core import models as core_models
 from cal import Calendar
+import random
 
 
 class AbstractItem(core_models.TimeStampedModel):
@@ -147,3 +148,10 @@ class Room(core_models.TimeStampedModel):
         this_month_cal = Calendar(this_year, this_month)
         next_month_cal = Calendar(next_year, next_month)
         return [this_month_cal, next_month_cal]
+
+    def get_four_amenities(self):
+        amenities = list(self.amenities.all())
+        # random.shuffle(amenities)
+        random.shuffle(amenities)
+        for amenity in amenities[:4]:
+            print(amenity)

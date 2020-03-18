@@ -1,0 +1,31 @@
+<div class="w-full mb-10 px-2">
+    <a href="{% url 'rooms:detail' room.pk %}">
+        <div class="w-full h-64 bg-cover bg-center rounded-lg mb-2" style="background-image: url({{room.get_first_photo}});">
+        </div>
+        <div class="flex justify-between items-center mb-2">
+            <div class="flex items-center">
+                {% if room.host.superhost %}
+                    <span class="uppercase text-black font-semibold text-xs border border-black rounded py-px px-1 mr-2">superhost</span>
+                {% endif %}
+                <span class="text-sm text-gray-600 block truncate">{{room.room_type}}</span>
+            </div>
+            
+            {% if room.get_total_rating != 0 %}
+                <span class="text-sm flex items-center">
+                    <i class="fas fa-star text-red-500 text-xs mr-1"></i>{{room.get_total_rating}}
+                </span>
+            {% endif %}
+                
+        </div>
+        <div class="font-semibold truncate mb-1">{{room.name}}</div>
+        <div class="text-gray-700 text-sm mb-1">
+            인원 {{room.guests}}명 · 침실 {{room.bedrooms}}개 · 침대 {{room.beds}}개 · 욕실 {{room.baths}}개
+        </div>
+        <div class="text-gray-700 text-sm">
+            {{room.get_four_amenities}}
+            <!-- {% for amenity in room.get_four_amenities %}
+                amenity
+            {% endfor %} -->
+        </div>
+    </a>
+</div>

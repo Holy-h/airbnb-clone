@@ -9,34 +9,45 @@
 
 {% block content %}
 
-  <h2>Search!</h2>
+  <div class="container mx-auto mt-32">
+    <p class="text-2xl font-semibold mb-10">검색</p>
 
-  <form method="get" action="{% url "rooms:search" %}">
-    {{form.as_p}}
-    <button>Search</button>
-  </form>
-    
-
-  <h3>Results</h3>
-  {% for room in rooms %}
-    <h4>{{room.name}}</h4>
-  {% endfor %}
-
-  <h5>
-    {% if rooms.has_previous %}
-        <a href="?{{query_string}}&page={{rooms.previous_page_number}}">이전</a>
-    {% endif %}
-    
-    Page {{rooms.number}} of {{rooms.paginator.num_pages}}
-
-    {% if rooms.has_next %}
-        <a href="?{{query_string}}&page={{rooms.next_page_number}}">다음</a>        
-    {% endif %}
-    
-    <br>
-    {% for page in rooms.paginator.page_range %}
-        <a href="?{{query_string}}&page={{page}}">{{page}}</a>
-    {% endfor %}
-  </h5> 
+    <div class="flex flex-col sm:flex-row">
+      <div class="w-full px-4 sm:w-1/3 sm:border-r">
+        <form method="get" action="{% url "rooms:search" %}"
+        class=""
+        >
+          {{form.as_p}}
+          <button class="btn bg-indigo-500 text-white">Search</button>
+        </form>
+      </div>
+  
+      <div class="w-full sm:w-2/3 px-4">
+        <p class="text-xl font-semibold mb-6">"{{request.GET.city}}-{{request.GET.country}}" 검색 결과 보기</p>
+        {% for room in rooms %}
+          {% include "mixins/room_search.html" with room=room %}
+        {% endfor %}
+  
+        <h5>
+          {% if rooms.has_previous %}
+              <a href="?{{query_string}}&page={{rooms.previous_page_number}}">이전</a>
+          {% endif %}
+          
+          {% if rooms %}
+            Page {{rooms.number}} of {{rooms.paginator.num_pages}}
+          {% endif %}
+  
+          {% if rooms.has_next %}
+              <a href="?{{query_string}}&page={{rooms.next_page_number}}">다음</a>        
+          {% endif %}
+          
+          <br>
+          {% for page in rooms.paginator.page_range %}
+              <a href="?{{query_string}}&page={{page}}">{{page}}</a>
+          {% endfor %}
+        </h5>
+      </div>
+    </div>
+  </div>
 
 {% endblock content %}
