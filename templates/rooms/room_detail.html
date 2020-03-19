@@ -17,7 +17,7 @@
 
     <div class="container mx-auto flex justify-around pb-56">
         <div class="w-8/12">
-            <div class="flex justify-between">
+            <div class="flex justify-between mb-6">
                 <div class="mr-6">
                     <h4 class="text-2xl font-medium">{{room.name}}</h4>
                     <span class="text-gray-700 font-light">{{room.city}}</span>
@@ -27,6 +27,7 @@
                     <span class="mt-1 font-medium text-gray-500">{{room.host.first_name}}</span>
                 </a>
             </div>
+            <a href="{% url 'lists:save-room' room.pk %}" class="btn-link text-base block rounded w-64">관심숙소로 저장</a>
             <div class="flex border-section">
                 <span class="mr-6">인원 {{room.guests}}명</span>
                 <span class="mr-6">침대 {{room.beds}}개</span>

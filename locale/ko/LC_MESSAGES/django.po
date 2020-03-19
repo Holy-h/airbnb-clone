@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-18 23:50+0900\n"
+"POT-Creation-Date: 2020-03-19 22:35+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,10 +22,15 @@ msgstr ""
 msgid "Search by City"
 msgstr "도시를 검색하세요"
 
-#: .\templates\partials\footer.html:5
+#: .\templates\partials\footer.html:6
 msgid "Please don't copy me."
 msgstr "카피하지 마세요."
 
-#: .\templates\partials\footer.html:8
+#: .\templates\partials\footer.html:9
 msgid "All rights reserved."
 msgstr "이 사이트의 저작권은 Bonggt에게 있습니다."
+
+#: .\templates\rooms\room_list.html:28
+#, python-format
+msgid "page %(cp)s of %(tp)s"
+msgstr ""

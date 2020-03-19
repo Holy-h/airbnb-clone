@@ -10,9 +10,10 @@
         </span>
     </div>
     <div class="mt-10">
+        {% get_current_language as LANGUAGE_CODE %}
         <select id="js-lang" class="w-40 p-1">
-            <option value="en">English</option>
-            <option value="ko">한국어</option>
+            <option value="ko" {% if LANGUAGE_CODE == 'ko' %} selected {% endif %}>한국어</option>
+            <option value="en" {% if LANGUAGE_CODE == 'en' %} selected {% endif %}>English</option>
         </select>
     </div>
 </footer>
