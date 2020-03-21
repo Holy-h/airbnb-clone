@@ -36,7 +36,7 @@
         </a>
         <div class="ml-6 flex flex-col">
           <span class="font-medium mb-2 text-lg">Contact your Bongnb Host</span>
-          <a href="#" class="text-teal-500 font-semibold">Send a Message</a>
+          <a href="{% url 'conversations:go' reservation.room.host.pk reservation.guest.pk %}" class="text-teal-500 font-semibold">Send a Message</a>
         </div>
       </div>
   
