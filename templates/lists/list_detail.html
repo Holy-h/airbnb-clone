@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  {{user.first_name}}의 프로필
+{% endblock page_title %}
+
+
+{% block search-bar %}
+{% endblock search-bar %}
+
+{% block content %}
+
+  <div class="min-h-75vh">
+
+    <div class="container mx-auto px-6 mt-32 mb-20 flex flex-col">
+        <span class="w-full mb-10 font-semibold text-xl">저장목록</span>
+        {% if user.list.rooms.count > 0 %}
+            <div class="flex flex-wrap mb-10 w-full">
+                {% for room in user.list.rooms.all %}
+                  {% include "mixins/room_card.html" with room=room%}
+                {% endfor %}
+            </div>
+        {% else %}
+            <span class="w-full mb-10">저장한 숙소가 없어요 😅</span>
+            <div class="flex flex-col">
+              <span class="font-semibold">여행을 떠나볼까요?</span>
+              <span>Todo - 랜덤한 숙소 보여주기</span>
+            </div>
+        {% endif %}
+    </div>
+
+  </div>
+
+{% endblock content %}
