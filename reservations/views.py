@@ -1,6 +1,6 @@
 import datetime
 from django.http import Http404
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.contrib import messages
 from django.shortcuts import redirect, reverse, render
 from rooms import models as room_models
@@ -79,3 +79,13 @@ def edit_reservation(request, pk, verb):
     reservation.save()
     messages.success(request, "예약 내용이 변경되었습니다")
     return redirect(reverse("reservations:detail", kwargs={"pk": reservation.pk}))
+
+
+class ReservationListView(ListView):
+
+    """ ReservationListView Definition """
+
+    model = reservation_models.Reservation
+    paginate_by = 12
+    paginate_orphans = 5
+    ordering = "-check_in"

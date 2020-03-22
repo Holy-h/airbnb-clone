@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_title %}
-  예약 {{reservation.check_in}}
+  {{reservation.check_in|date:"Y년 n월 d일"}}
 {% endblock page_title %}
 
 {% block search-bar %}
@@ -14,8 +14,14 @@
     
     <div class="flex flex-col items-start border-l border-r border-b">
       <div class="py-6 px-4 border-b w-full font-medium">
-        <span>{{reservation.check_in}} - {{reservation.check_out}}</span>
-        <span class="ml-4 font-semibold {% if reservation.status == 'pending' %} text-yellow-500 {% elif reservation.status == 'canceled' %} text-red-600 {% else %} text-teal-600 {% endif %}">{{reservation.get_status_display}}</span>
+        <span>{{reservation.check_in|date:"Y년 n월 d일"}}</span>
+        <span>-</span>
+        <span>{{reservation.check_out|date:"Y년 n월 d일"}}</span>
+        <span class="ml-4 font-semibold
+          {% if reservation.status == 'pending' %} text-orange-500
+          {% elif reservation.status == 'canceled' %} text-red-600
+          {% else %} text-blue-600
+          {% endif %}">{{reservation.get_status_display}}</span>
       </div>
   
       <a href="{% url 'rooms:detail' reservation.room.pk %}" class="text-2xl px-4 py-6 font-medium border-b w-full">
