@@ -55,7 +55,7 @@ class ReservationDetailView(View):
 
         return render(
             self.request,
-            "reservations/detail.html",
+            "reservations/reservation_detail.html",
             {"reservation": reservation, "form": form},
         )
 

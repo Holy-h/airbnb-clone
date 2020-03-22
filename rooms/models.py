@@ -153,5 +153,4 @@ class Room(core_models.TimeStampedModel):
         amenities = list(self.amenities.all())
         # random.shuffle(amenities)
         random.shuffle(amenities)
-        for amenity in amenities[:4]:
-            print(amenity)
+        return amenities[:4]

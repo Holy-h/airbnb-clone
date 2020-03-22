@@ -10,13 +10,6 @@
 {% block content %}
   <div class="container mx-auto mt-32 mb-10 flex flex-col">
 
-    <div class="p-4 mb-4 border-b border-gray-300 flex justify-between items-center">
-      <a href="{% url 'rooms:detail' reservation.room.pk %}" class="text-blue-500 font-medium">
-        <i class="fas fa-arrow-left"></i>
-        <span>숙소 보기</span>
-      </a>
-    </div>
-
     <div class="bg-cover bg-center h-56 rounded-t-lg" style="background-image: url({{reservation.room.get_first_photo}});"></div>
     
     <div class="flex flex-col items-start border-l border-r border-b">
@@ -25,9 +18,9 @@
         <span class="ml-4 font-semibold {% if reservation.status == 'pending' %} text-yellow-500 {% elif reservation.status == 'canceled' %} text-red-600 {% else %} text-teal-600 {% endif %}">{{reservation.get_status_display}}</span>
       </div>
   
-      <div class="text-2xl px-4 py-6 font-medium border-b w-full">
+      <a href="{% url 'rooms:detail' reservation.room.pk %}" class="text-2xl px-4 py-6 font-medium border-b w-full">
         {{reservation.room.name}}
-      </div>
+      </a>
   
       <div class="flex py-10 px-4 {% if reservation.status != 'canceled' %} border-b {% endif %} w-full">
         <a href="{{reservation.room.host.get_absolute_url}}" class="flex flex-col items-center">

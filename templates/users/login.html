@@ -9,7 +9,7 @@
 {% endblock search-bar %}
 
 {% block content %}
-  <div class="container mx-auto py-10 px-6 mt-32 mb-10 flex flex-col items-center border border-gray-300 md:w-1/2 lg:w-5/12 xl:w-4/12">
+  <div class="container container-m-p py-10 mb-10 flex flex-col items-center border border-gray-300 md:w-1/2 lg:w-5/12 xl:w-4/12">
     {% include "partials/social_login.html" %}
 
     {% include "mixins/auth/auth_form.html" with form=form cta="로그인" %}

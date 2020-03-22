@@ -1,4 +1,4 @@
-<div class="w-full mb-10 px-2">
+<div class="w-full mb-10">
     <a href="{% url 'rooms:detail' room.pk %}">
         <div class="w-full h-64 bg-cover bg-center rounded-lg mb-2" style="background-image: url({{room.get_first_photo}});">
         </div>
@@ -22,10 +22,10 @@
             인원 {{room.guests}}명 · 침실 {{room.bedrooms}}개 · 침대 {{room.beds}}개 · 욕실 {{room.baths}}개
         </div>
         <div class="text-gray-700 text-sm">
-            {{room.get_four_amenities}}
-            <!-- {% for amenity in room.get_four_amenities %}
-                amenity
-            {% endfor %} -->
+            {% for amenity in room.get_four_amenities %}
+                <span>{{amenity}}</span>
+                {% if not forloop.last %}<span>|</span>{% endif %}
+            {% endfor %}
         </div>
     </a>
 </div>

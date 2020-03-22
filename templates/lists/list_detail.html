@@ -10,9 +10,7 @@
 
 {% block content %}
 
-  <div class="min-h-75vh">
-
-    <div class="container mx-auto px-6 mt-32 mb-20 flex flex-col">
+  <div class="min-h-75vh container container-m-p mb-20 flex flex-col">
         <span class="w-full mb-10 font-semibold text-xl">저장목록</span>
         {% if user.list.rooms.count > 0 %}
             <div class="flex flex-wrap mb-10 w-full">
@@ -27,7 +25,6 @@
               <span>Todo - 랜덤한 숙소 보여주기</span>
             </div>
         {% endif %}
-    </div>
 
   </div>
 

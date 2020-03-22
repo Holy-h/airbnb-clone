@@ -65,8 +65,8 @@ class SearchView(View):
                 baths = form.cleaned_data.get("baths")
                 instant_book = form.cleaned_data.get("instant_book")
                 superhost = form.cleaned_data.get("superhost")
-                amenities = form.cleaned_data.get("amenities")
-                facilities = form.cleaned_data.get("facilities")
+                # amenities = form.cleaned_data.get("amenities")
+                # facilities = form.cleaned_data.get("facilities")
 
                 """ filter """
                 filter_args = Q()
@@ -102,13 +102,13 @@ class SearchView(View):
 
                 qs = models.Room.objects.filter(filter_args)
 
-                for amenity in amenities:
-                    # rooms = rooms & models.Room.objects.filter(amenities=amenity)
-                    qs = qs.filter(amenities=amenity)
+                # for amenity in amenities:
+                # rooms = rooms & models.Room.objects.filter(amenities=amenity)
+                # qs = qs.filter(amenities=amenity)
 
-                for facility in facilities:
-                    # rooms = rooms & models.Room.objects.filter(facilities=facility)
-                    qs = qs.filter(facilities=facility)
+                # for facility in facilities:
+                # rooms = rooms & models.Room.objects.filter(facilities=facility)
+                # qs = qs.filter(facilities=facility)
 
                 qs = qs.order_by("-created")
 
@@ -123,7 +123,6 @@ class SearchView(View):
                 urlencode = request.GET.urlencode()
 
                 query_list = [i for i in urlencode.split("&") if "page=" not in i]
-
                 """
                 복잡한 버전
                 query_list = []
@@ -298,4 +297,3 @@ class CreateRoomView(User_mixins.LoggedInOnlyView, UserPassesTestMixin, FormView
         form.save_m2m()
         messages.success(self.request, "숙소가 업로드 되었습니다.")
         return redirect(reverse("rooms:detail", kwargs={"pk": room.pk}))
-
