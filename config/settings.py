@@ -89,7 +89,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-if DEBUG is False:
+if DEBUG:
 
     DATABASES = {
         "default": {
@@ -97,7 +97,6 @@ if DEBUG is False:
             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
         }
     }
-
 else:
 
     DATABASES = {
@@ -105,8 +104,8 @@ else:
             "ENGINE": "django.db.backends.postgresql",
             "HOST": os.environ.get("RDS_HOST"),
             "NAME": os.environ.get("RDS_NAME"),
-            "PASSWORD": os.environ.get("RDS_PASSWORD"),
             "USER": os.environ.get("RDS_USER"),
+            "PASSWORD": os.environ.get("RDS_PASSWORD"),
             "PORT": "5432",
         }
     }
