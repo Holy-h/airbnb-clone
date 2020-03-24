@@ -8,6 +8,14 @@ from . import models as list_models
 def toggle_room(request, room_pk):
     action = request.GET.get("action", None)
 
+    previous_url = request.META.get("HTTP_REFERER")
+
+    user = request.user
+
+    if not user.is_authenticated:
+        messages.error(request, "로그인이 필요합니다.")
+        return redirect(reverse("users:login"))
+
     room = room_models.Room.objects.get_or_none(pk=room_pk)
 
     if room is not None and action is not None:
@@ -26,7 +34,10 @@ def toggle_room(request, room_pk):
     else:
         messages.error(request, "올바르지 않은 접근입니다.")
 
-    return redirect(reverse("rooms:detail", kwargs={"pk": room_pk}))
+    if "rooms" in previous_url:
+        return redirect(reverse("rooms:detail", kwargs={"pk": room_pk}))
+    else:
+        return redirect(reverse("core:home"))
 
 
 class SeeFavsView(TemplateView):

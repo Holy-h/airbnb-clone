@@ -1,4 +1,5 @@
-<div class="w-full sm:w-1/2 lg:w-1/4 mb-10 px-4 sm:px-2">
+{% load on_favs %}
+<div class="w-full sm:w-1/2 lg:w-1/4 mb-10 px-4 sm:px-2 relative">
     <a href="{% url 'rooms:detail' room.pk %}">
         <div class="w-full h-64 bg-cover bg-center rounded-lg mb-2" style="background-image: url({{room.get_first_photo}});">
         </div>
@@ -18,5 +19,24 @@
                 
         </div>
         <span class="text-black w-11/12 block truncate">{{room.name}}</span>
+    </a>
+    
+    {% on_favs room as on_favs_boolean %}
+    
+    {% if on_favs_boolean %}
+        <a
+            href="{% url 'lists:toggle-room' room.pk %}?action=remove"
+            class="absolute top-0 right-0 bg-white opacity-75 h-8 w-8 mr-4 mt-2 rounded flex items-center justify-center text-red-500
+            transition duration-150 hover:opacity-100 hover:shadow-md ease-in-out
+        "><i class="text-base fas fa-heart"></i>
+        </a>
+    {% else %}
+        <a href="{% url 'lists:toggle-room' room.pk %}?action=add"
+            class="absolute top-0 right-0 bg-white opacity-75 h-8 w-8 mr-4 mt-2 rounded flex items-center justify-center
+            transition duration-150 hover:opacity-100 hover:shadow-md hover:text-red-500 ease-in-out
+        "><i class="text-base far fa-heart"></i>
+        </a>
+    {% endif %}
+
     </a>
 </div>
