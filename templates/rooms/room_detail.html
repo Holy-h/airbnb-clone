@@ -7,10 +7,14 @@
 
 {% block content %}
     <div class="container max-w-full mb-20 flex h-50vh lg:h-75vh">
-        <div class="h-full w-full sm:w-1/2 bg-cover bg-center border border-gray-500" style="background-image: url({{room.get_first_photo}})"></div>
+        <div class="h-full w-full sm:w-1/2 border border-gray-500 overflow-hidden">
+            <div class="w-full h-full bg-cover bg-center transform hover:scale-110 duration-300 ease-in-out" style="background-image: url({{room.get_first_photo}})"></div>
+        </div>
         <div class="h-full w-0 sm:w-1/2 flex flex-wrap">
             {% for photo in room.get_next_four_photos %}
-                <div class="h-auto w-1/2 bg-cover bg-center border border-gray-500" style="background-image: url({{photo}})"></div>
+                <div class="h-auto w-1/2 border border-gray-500 overflow-hidden">
+                    <div class="w-full h-full bg-cover bg-center transform hover:scale-110 duration-300 ease-in-out" style="background-image: url({{photo}})"></div>
+                </div>
             {% endfor %}
         </div>
     </div>

@@ -36,6 +36,8 @@ def toggle_room(request, room_pk):
 
     if "rooms" in previous_url:
         return redirect(reverse("rooms:detail", kwargs={"pk": room_pk}))
+    elif "lists" in previous_url:
+        return redirect(reverse("lists:see-favs"))
     else:
         return redirect(reverse("core:home"))
 

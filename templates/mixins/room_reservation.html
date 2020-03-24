@@ -24,10 +24,11 @@
 
     <a href="{% url 'reservations:detail' reservation.pk %}">
 
-        <div
-            class="w-full h-64 bg-cover bg-center rounded-lg mb-2"
-            style="background-image: url({{reservation.room.get_first_photo}});"
-        ></div>
+        <div class="w-full h-64 bg-cover bg-center rounded-lg mb-2 overflow-hidden">
+            <div class="w-full h-full bg-cover bg-center transform hover:scale-110 duration-150 ease-in-out" style="background-image: url({{reservation.room.get_first_photo}});">
+
+            </div>
+        </div>
 
         <div class="flex justify-between mb-2">
             <div class="flex w-10/12">

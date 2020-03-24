@@ -1,7 +1,8 @@
 {% load on_favs %}
 <div class="w-full sm:w-1/2 lg:w-1/4 mb-10 px-4 sm:px-2 relative">
     <a href="{% url 'rooms:detail' room.pk %}">
-        <div class="w-full h-64 bg-cover bg-center rounded-lg mb-2" style="background-image: url({{room.get_first_photo}});">
+        <div class="w-full h-64 rounded-lg mb-2 overflow-hidden">
+            <div class="w-full h-full bg-cover bg-center transform hover:scale-110 duration-150 ease-in-out" style="background-image: url({{room.get_first_photo}});"></div>
         </div>
         <div class="flex justify-between mb-2">
             <div class="flex w-10/12">
