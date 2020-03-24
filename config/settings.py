@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "0x#zhf%e-v4!ejf3qzg=pxgx%o4p=1j*4atm9@bu_-9*2t0i+x"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -89,7 +89,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-if DEBUG:
+if DEBUG is False:
 
     DATABASES = {
         "default": {
@@ -97,6 +97,7 @@ if DEBUG:
             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
         }
     }
+
 else:
 
     DATABASES = {
