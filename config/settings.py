@@ -25,10 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("DJANGO_SECRET", "$gJHUqUNvaRa78SS2^nJSN1a$DcfJ")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get("DEBUG") == "False":
-    DEBUG = False
-else:
-    DEBUG = bool(os.environ.get("DEBUG"))
+DEBUG = os.environ.get("DEBUG") == "True"
 
 ALLOWED_HOSTS = [".elasticbeanstalk.com", "localhost", "127.0.0.1"]
 
@@ -108,9 +105,9 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "HOST": "bongnb-clone.cb09raoajxla.ap-northeast-2.rds.amazonaws.com",
-            "NAME": os.environ.get("RDS_NAME"),
-            "USER": os.environ.get("RDS_USER"),
+            "HOST": "airbnb-clone.cb09raoajxla.ap-northeast-2.rds.amazonaws.com",
+            "NAME": "postgres",
+            "USER": "postgres",
             "PASSWORD": "qudgns12",
             "PORT": "5432",
         }
