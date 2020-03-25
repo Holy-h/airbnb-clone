@@ -190,7 +190,7 @@ if not DEBUG:
         f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
     )
 
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static"
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
 
 # Sentry & S3
 
