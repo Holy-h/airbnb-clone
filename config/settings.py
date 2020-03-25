@@ -25,7 +25,7 @@ SECRET_KEY = "O>9*hr;V,nFB@HG^:`H}2D'5$?*YT%Z{l^>DxHk)6R4q.j{4*RT]P&h(0C%*+,V"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".elasticbeanstalk.com"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -103,7 +103,7 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "HOST": os.environ.get("RDS_HOST"),
+            "HOST": "bongnb-clone.cb09raoajxla.ap-northeast-2.rds.amazonaws.com",
             "NAME": os.environ.get("RDS_NAME"),
             "USER": os.environ.get("RDS_USER"),
             "PASSWORD": os.environ.get("RDS_PASSWORD"),
