@@ -103,10 +103,10 @@ else:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
-            "HOST": "bongnb-clone.cb09raoajxla.ap-northeast-2.rds.amazonaws.com",
+            "HOST": "airbnb-clone.cb09raoajxla.ap-northeast-2.rds.amazonaws.com",
             "NAME": os.environ.get("RDS_NAME"),
             "USER": os.environ.get("RDS_USER"),
-            "PASSWORD": os.environ.get("RDS_PASSWORD"),
+            "PASSWORD": "qudgns12",
             "PORT": "5432",
         }
     }
